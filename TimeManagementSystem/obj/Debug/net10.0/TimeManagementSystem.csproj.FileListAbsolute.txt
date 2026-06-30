@@ -1,0 +1,14 @@
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/bin/Debug/net10.0/TimeManagementSystem
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/bin/Debug/net10.0/TimeManagementSystem.deps.json
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/bin/Debug/net10.0/TimeManagementSystem.runtimeconfig.json
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/bin/Debug/net10.0/TimeManagementSystem.dll
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/bin/Debug/net10.0/TimeManagementSystem.pdb
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.AssemblyInfoInputs.cache
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.AssemblyInfo.cs
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.csproj.CoreCompileInputs.cache
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.dll
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/refint/TimeManagementSystem.dll
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.pdb
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/TimeManagementSystem.genruntimeconfig.cache
+/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/obj/Debug/net10.0/ref/TimeManagementSystem.dll
