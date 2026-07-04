@@ -58,19 +58,13 @@ class Program
                     //ShowTimeEntryMenu();
                     break;
                 case "3":
-                    //
+                    //ShowReportMenu();
                     break;
                 case "4":
-                    //
+                    //ShowSettingMenu();
                     break;
                 case "5":
-                    CreateTimeEntry(timeEntries);
-                    break;
-                case "6":
-                    ShowTimeEntries(timeEntries);
-                    break;
-                case "10":
-                    ShowProjectMenu();
+                    //Exit();
                     break;
                 default:
                     Console.WriteLine("Optie niet herkent");
@@ -170,7 +164,54 @@ class Program
 
     static void DeleteProject()
     {
-        
+        Console.WriteLine("========== Delete Project ==========");
+        Console.WriteLine();
+        Console.WriteLine("Available Projects: ");
+        Console.WriteLine();
+
+        int projectCounter = 1;
+
+        foreach (string project in projects)
+        {
+            Console.WriteLine($"[{projectCounter}] {project}");
+            projectCounter++;
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Select a project number");
+
+        string readInput = Console.ReadLine();
+
+        // Convert user input to real number
+        int userInput = Int32.Parse(readInput);
+
+        for(int i = 0; i < projects.Count; i++)
+        {
+            if (userInput-1 == i)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Are you sure you want to delete: {projects[i]}?");
+                Console.WriteLine();
+                Console.WriteLine("(Y/N):");
+
+                readInput = Console.ReadLine();
+
+                Console.WriteLine();
+
+                if (readInput == "Y")
+                {
+                    projects.RemoveAt(i);
+
+                    Console.WriteLine("Project deleted successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("Project deletion cancelled");
+                }
+                
+                Console.WriteLine();
+            }
+        }
     }
 
     static void ShowProjectMenu()
