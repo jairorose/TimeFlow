@@ -13,13 +13,15 @@
 // 5. Tijd handmatig toevoegen
 // 6. Week overzicht bekijken
 
-using Microsoft.VisualBasic;
+//using Microsoft.VisualBasic;
 
-namespace TimeManagementSystem;
+using TimeManagementSystem.Data;
+using TimeManagementSystem.Models;
+
 class Program
 {
     // Initalizing data
-    private static List<string> projects = new List<string> {"MMA", "Lezen", "School"}; // List of existing projects
+    //private static List<string> projects = new List<string> {"MMA", "Lezen", "School"}; // List of existing projects
     private static List<string[]> timeEntries = new List<string[]>();
     static void Main(string[] args)
     {
@@ -79,6 +81,8 @@ class Program
 
     static void CreateProject()
     {   
+        using var db = new TimeFlowDbContext(); // Make connection to the database
+
         string readInput = "";
 
         do
@@ -95,7 +99,15 @@ class Program
                 string projectName = readInput;
                 Console.WriteLine($"Project '{projectName}' created successfully!");
                 Console.WriteLine(); // White space
-                projects.Add(projectName);
+                //projects.Add(projectName);
+                
+                var project = new Project
+                {
+                    Name = projectName
+                };
+
+                db.Projects.Add(project);
+                db.SaveChanges();
             }
 
         } while (string.IsNullOrEmpty(readInput));
@@ -109,10 +121,14 @@ class Program
 
         int projectCounter = 0;
 
-        foreach (string project in projects)
+        using var db = new TimeFlowDbContext();
+
+        var projects = db.Projects.ToList();
+
+        foreach (var project in projects)
         {
             projectCounter++;
-            Console.WriteLine($"[{projectCounter}] {project}");
+            Console.WriteLine($"[{projectCounter}] {project.Name}");
         }
 
         Console.WriteLine();
@@ -128,9 +144,13 @@ class Program
 
         int projectCounter = 1;
 
-        foreach (string project in projects)
+        using var db = new TimeFlowDbContext();
+
+        var projects = db.Projects.ToList();
+
+        foreach (var project in projects)
         {
-            Console.WriteLine($"[{projectCounter}] {project}");
+            Console.WriteLine($"[{projectCounter}] {project.Name}");
             projectCounter++;
         }
 
@@ -153,7 +173,8 @@ class Program
 
                 readInput = Console.ReadLine();
 
-                projects[i] = readInput;
+                projects[i].Name = readInput;
+                db.SaveChanges();
 
                 Console.WriteLine();
                 Console.WriteLine("Project updated successfully!");
@@ -171,9 +192,13 @@ class Program
 
         int projectCounter = 1;
 
-        foreach (string project in projects)
+        using var db = new TimeFlowDbContext();
+
+        var projects = db.Projects.ToList();
+
+        foreach (var project in projects)
         {
-            Console.WriteLine($"[{projectCounter}] {project}");
+            Console.WriteLine($"[{projectCounter}] {project.Name}");
             projectCounter++;
         }
 
@@ -200,7 +225,8 @@ class Program
 
                 if (readInput == "Y")
                 {
-                    projects.RemoveAt(i);
+                    db.Projects.Remove(projects[i]);
+                    db.SaveChanges();
 
                     Console.WriteLine("Project deleted successfully!");
                 }
