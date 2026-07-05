@@ -82,11 +82,11 @@ dotnet run
 
 ### Version 1.0 - Console Foundation
 
-* [ ] Project CRUD
+* [x] Project CRUD
 * [ ] Time entry CRUD
 * [ ] Timer functionality
 * [ ] Weekly, monthly and yearly reports
-* [ ] SQLite integration
+* [x] SQLite integration
 * [ ] Unit tests
 
 ### Version 2.0 - Web Application

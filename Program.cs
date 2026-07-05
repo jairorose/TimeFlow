@@ -167,7 +167,7 @@ class Program
             if (userInput-1 == i)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Current project name: {projects[i]}");
+                Console.WriteLine($"Current project name: {projects[i].Name}");
                 Console.WriteLine();
                 Console.WriteLine("Enter new project name:");
 
@@ -215,7 +215,7 @@ class Program
             if (userInput-1 == i)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Are you sure you want to delete: {projects[i]}?");
+                Console.WriteLine($"Are you sure you want to delete: {projects[i].Name}?");
                 Console.WriteLine();
                 Console.WriteLine("(Y/N):");
 
