@@ -1,28 +1,10 @@
-﻿// Projecten kunenn aanmaken
-// Een project heeft: een naam
-
-// Taak aan project kunnen hangen
-// Een taak heeft: een begintijd, eindtijd, beschrijving, 
-
-// CRUD: create, read, update, delete
-
-// 1. Project aanmaken
-// 2. Projecten bekijken
-// 3. Timer starten
-// 4. Timer stoppen
-// 5. Tijd handmatig toevoegen
-// 6. Week overzicht bekijken
-
-//using Microsoft.VisualBasic;
+﻿using Microsoft.EntityFrameworkCore;
 
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 
 class Program
 {
-    // Initalizing data
-    //private static List<string> projects = new List<string> {"MMA", "Lezen", "School"}; // List of existing projects
-    private static List<TimeEntry> timeEntries = new List<TimeEntry>();
     static void Main(string[] args)
     {
         Console.WriteLine("");
@@ -297,7 +279,7 @@ class Program
                 CreateTimeEntry();
                 break;
             case "2":
-                //ShowProjects();
+                ShowTimeEntries();
                 break;
             case "3":
                 //EditProject();
@@ -336,6 +318,7 @@ class Program
 
         string userInput = Console.ReadLine();
         int projectIndex = Int32.Parse(userInput) - 1;
+        int projectId = projects[projectIndex].Id;
 
         // Get the description of the time entry
         Console.WriteLine();
@@ -357,21 +340,45 @@ class Program
         readInput = Console.ReadLine();
         DateTime endTime = DateTime.ParseExact(readInput, "dd-MM-yyyy HH:mm", null);
 
-        Console.WriteLine($"Taak is aangemaakt: {description}, van {startTime} tot {endTime} (Project: {projects[projectIndex].Name})");
+        // Save data to database
+        var timeEntry = new TimeEntry
+        {
+            Description = description,
+            StartTime = startTime,
+            EndTime = endTime,
+            ProjectId = projectId
+        };
+
+        db.TimeEntries.Add(timeEntry);
+        db.SaveChanges();
+
+        Console.WriteLine();
+        Console.WriteLine("Time entry added successfully!");
     }
 
-    static void ShowTimeEntries(List<string[]> timeEntries)
+    static void ShowTimeEntries()
     {
-        Console.WriteLine("Dit zijn alle time entries:");
+        Console.WriteLine("========== Create Time Entry ==========");
 
-        foreach (string[] timeEntry in timeEntries)
-        {
-            string timeEntryDescription = timeEntry[0];
-            string timeEntryStartTime = timeEntry[1];
-            string timeEntryEndTime = timeEntry[2];
-            string projectName = timeEntry[3];
+        using var db = new TimeFlowDbContext();
 
-            Console.WriteLine($"{timeEntryDescription}, vanaf {timeEntryStartTime} tot {timeEntryEndTime} (Project: {projectName})");
+        var timeEntries = db.TimeEntries
+            .Include(t => t.Project)
+            .ToList();
+        int timeEntryCounter = 0;
+
+        foreach (var timeEntry in timeEntries)
+        {  
+            timeEntryCounter++;
+
+            TimeSpan duration = timeEntry.EndTime.Subtract(timeEntry.StartTime);
+
+            Console.WriteLine();
+            Console.WriteLine($"{timeEntryCounter}.");
+            Console.WriteLine($"Project: {timeEntry.Project.Name}");
+            Console.WriteLine($"Description: {timeEntry.Description}");
+            Console.WriteLine($"Start: {timeEntry.StartTime}");
+            Console.WriteLine($"Duration: {(int)duration.TotalHours:00}:{(int)duration.Minutes:00}");
         }
     }
 }
