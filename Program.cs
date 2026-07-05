@@ -22,7 +22,7 @@ class Program
 {
     // Initalizing data
     //private static List<string> projects = new List<string> {"MMA", "Lezen", "School"}; // List of existing projects
-    private static List<string[]> timeEntries = new List<string[]>();
+    private static List<TimeEntry> timeEntries = new List<TimeEntry>();
     static void Main(string[] args)
     {
         Console.WriteLine("");
@@ -57,7 +57,7 @@ class Program
                     ShowProjectMenu();
                     break;
                 case "2":
-                    //ShowTimeEntryMenu();
+                    ShowTimeEntryMenu();
                     break;
                 case "3":
                     //ShowReportMenu();
@@ -277,35 +277,87 @@ class Program
         }
     }
 
-    static List<string[]> CreateTimeEntry(List<string[]> timeEntries)
+    static void ShowTimeEntryMenu()
     {
-        // Time entry aanmaken
-        Console.WriteLine("Voeg een taak toe, begin met de beschrijving:");
+        Console.WriteLine("========== Time Entries ==========");
+        Console.WriteLine();
+        Console.WriteLine("1. Add Time Entry");
+        Console.WriteLine("2. View Time Entries");
+        Console.WriteLine("3. Edit Time Entry");
+        Console.WriteLine("4. Delete Time Entry");
+        Console.WriteLine("5. Back to Main Menu");
+        Console.WriteLine();
+        Console.WriteLine("Select an option:");
+
         string readInput = Console.ReadLine();
 
-        string timeEntryDescription = readInput;
+        switch (readInput)
+        {
+            case "1":
+                CreateTimeEntry();
+                break;
+            case "2":
+                //ShowProjects();
+                break;
+            case "3":
+                //EditProject();
+                break;
+            case "4":
+                //DeleteProject();
+                break;
+            case "5":
+                //ShowMainMenu();
+                break;
+            default:
+                //
+                break;
+        }
+    }
+    static void CreateTimeEntry()
+    {
+        using var db = new TimeFlowDbContext();
+        
+        // First show projects to attach the time entry to
+        Console.WriteLine("========== Create Time Entry ==========");
+        Console.WriteLine();
+        Console.WriteLine("Available Projects:");
 
-        Console.WriteLine("Geef een begin tijd op: 23:59 23-07-2026");
+        var projects = db.Projects.ToList();
+        int projectCounter = 0;
+
+        foreach (var project in projects)
+        {
+            projectCounter++;
+            Console.WriteLine($"{projectCounter}. {project.Name}");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Select a project number");
+
+        string userInput = Console.ReadLine();
+        int projectIndex = Int32.Parse(userInput) - 1;
+
+        // Get the description of the time entry
+        Console.WriteLine();
+        Console.WriteLine("Add a description:");
+        
+        string description = Console.ReadLine();
+
+        // Get the start time of the time entry
+        Console.WriteLine();
+        Console.WriteLine("Start Date & Time (dd-MM-yyyy HH:mm):");
+
+        string readInput = Console.ReadLine();
+        DateTime startTime = DateTime.ParseExact(readInput, "dd-MM-yyyy HH:mm", null);
+
+        // Get the end time of the time entry
+        Console.WriteLine();
+        Console.WriteLine("End Date & Time   (dd-MM-yyyy HH:mm):");
+
         readInput = Console.ReadLine();
+        DateTime endTime = DateTime.ParseExact(readInput, "dd-MM-yyyy HH:mm", null);
 
-        string timeEntryStartTime = readInput;
-
-        Console.WriteLine("Geef een eind tijd op: 23:59 23-07-2026");
-        readInput = Console.ReadLine();
-
-        string timeEntryEndTime = readInput;
-
-        Console.WriteLine("Geef een gekoppelde project aan");
-        readInput = Console.ReadLine();
-
-        string projectName = readInput;
-
-        Console.WriteLine($"Taak is aangemaakt: {timeEntryDescription}, van {timeEntryStartTime} tot {timeEntryEndTime} (Project: {projectName})");
-        string[] timeEntry = {timeEntryDescription, timeEntryStartTime, timeEntryEndTime, projectName};
-
-        timeEntries.Add(timeEntry);
-
-        return timeEntries;
+        Console.WriteLine($"Taak is aangemaakt: {description}, van {startTime} tot {endTime} (Project: {projects[projectIndex].Name})");
     }
 
     static void ShowTimeEntries(List<string[]> timeEntries)

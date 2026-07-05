@@ -6,6 +6,7 @@ namespace TimeManagementSystem.Data;
 public class TimeFlowDbContext : DbContext
 {
     public DbSet<Project> Projects => Set<Project>();
+    public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
