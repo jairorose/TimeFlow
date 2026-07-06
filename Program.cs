@@ -285,10 +285,10 @@ class Program
                 EditTimeEntry();
                 break;
             case "4":
-                //DeleteProject();
+                DeleteTimeEntry();
                 break;
             case "5":
-                //ShowMainMenu();
+                ShowMainMenu();
                 break;
             default:
                 //
@@ -474,5 +474,73 @@ class Program
         }
 
         db.SaveChanges();
+    }
+
+    static void DeleteTimeEntry()
+    {
+        Console.WriteLine("========== Delete Time Entry ==========");
+        Console.WriteLine();
+        Console.WriteLine("Available Time Entries: ");
+        Console.WriteLine();
+
+        int timeEntryCounter = 1;
+
+        using var db = new TimeFlowDbContext();
+
+        var timeEntries = db.TimeEntries
+            .Include(t => t.Project)
+            .ToList();
+
+        foreach (var timeEntry in timeEntries)
+        {
+            TimeSpan duration = timeEntry.EndTime.Subtract(timeEntry.StartTime);
+
+            Console.WriteLine();
+            Console.WriteLine($"{timeEntryCounter}.");
+            Console.WriteLine($"Project: {timeEntry.Project.Name}");
+            Console.WriteLine($"Description: {timeEntry.Description}");
+            //Console.WriteLine($"Start: {timeEntry.StartTime}");
+            //Console.WriteLine($"Duration: {(int)duration.TotalHours:00}:{(int)duration.Minutes:00}");
+            timeEntryCounter++;
+        }
+
+        Console.WriteLine("Select a time entry number");
+
+        string readInput = Console.ReadLine();
+
+        // Convert user input to real number
+        int userInput = Int32.Parse(readInput);
+
+        for(int i = 0; i < timeEntries.Count; i++)
+        {
+            if (userInput-1 == i)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Are you sure you want to delete: ");
+                Console.WriteLine();
+                Console.WriteLine($"Project: {timeEntries[i].Project.Name}?");
+                Console.WriteLine($"Description: {timeEntries[i].Description}?");
+                Console.WriteLine();
+                Console.WriteLine("(Y/N):");
+
+                readInput = Console.ReadLine();
+
+                Console.WriteLine();
+
+                if (readInput == "Y")
+                {
+                    db.TimeEntries.Remove(timeEntries[i]);
+                    db.SaveChanges();
+
+                    Console.WriteLine("Time Entry deleted successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("Time Entry deletion cancelled");
+                }
+                
+                Console.WriteLine();
+            }
+        }
     }
 }
