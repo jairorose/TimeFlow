@@ -19,13 +19,13 @@ public static class MainMenu
             switch (readInput)
             {
                 case "1":
-                    Menus.ProjectMenu.Show();
+                    ProjectMenu.Show();
                     break;
                 case "2":
-                    Menus.TimeEntryMenu.Show();
+                    TimeEntryMenu.Show();
                     break;
                 case "3":
-                    //ShowReportMenu();
+                    ReportMenu.Show();
                     break;
                 case "4":
                     //ShowSettingMenu();

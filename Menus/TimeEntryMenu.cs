@@ -1,8 +1,6 @@
 namespace TimeManagementSystem.Menus;
 
-using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
-using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Services;
 
 public static class TimeEntryMenu
