@@ -5,6 +5,15 @@ using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 public class ProjectService
 {
+    public List<Project> GetAll()
+    {
+        using var db = new TimeFlowDbContext();
+
+        List<Project> projects = db.Projects.ToList();
+
+        return projects;
+    }
+    
     public void Create(string name)
     {
         using var db = new TimeFlowDbContext(); // Make connection to the database
@@ -16,15 +25,6 @@ public class ProjectService
 
         db.Projects.Add(project);
         db.SaveChanges();
-    }
-
-    public List<Project> GetAll()
-    {
-        using var db = new TimeFlowDbContext();
-
-        List<Project> projects = db.Projects.ToList();
-
-        return projects;
     }
 
     public void Update(int id, string name)
