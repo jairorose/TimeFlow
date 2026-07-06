@@ -1,7 +1,7 @@
 namespace TimeManagementSystem.Menus;
 
-using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
+using TimeManagementSystem.Services;
 
 public static class ProjectMenu
 {
@@ -42,10 +42,8 @@ public static class ProjectMenu
         }
     }
 
-    static void CreateProject()
-    {   
-        using var db = new TimeFlowDbContext(); // Make connection to the database
-
+    private static void CreateProject()
+    {
         string readInput = "";
 
         do
@@ -59,36 +57,25 @@ public static class ProjectMenu
             
             if (!string.IsNullOrEmpty(readInput))
             {
-                string projectName = readInput;
-                Console.WriteLine($"Project '{projectName}' created successfully!");
-                Console.WriteLine(); // White space
-                //projects.Add(projectName);
-                
-                var project = new Project
-                {
-                    Name = projectName
-                };
+                ProjectService.Create(readInput);
 
-                db.Projects.Add(project);
-                db.SaveChanges();
+                Console.WriteLine($"Project '{readInput}' created successfully!");
+                Console.WriteLine();
             }
 
         } while (string.IsNullOrEmpty(readInput));
-        
     }
 
-    static void ShowProjects()
+    private static void ShowProjects()
     {
         Console.WriteLine("========== Projects ==========");
         Console.WriteLine();
 
         int projectCounter = 0;
 
-        using var db = new TimeFlowDbContext();
+        List<Project> projects = ProjectService.GetAll();
 
-        var projects = db.Projects.ToList();
-
-        foreach (var project in projects)
+        foreach (Project project in projects)
         {
             projectCounter++;
             Console.WriteLine($"[{projectCounter}] {project.Name}");
@@ -98,7 +85,7 @@ public static class ProjectMenu
         Console.WriteLine($"Total Projects: {projectCounter}");
     }
 
-    static void EditProject()
+    private static void EditProject()
     {
         Console.WriteLine("========== Edit Project ==========");
         Console.WriteLine();
@@ -107,11 +94,9 @@ public static class ProjectMenu
 
         int projectCounter = 1;
 
-        using var db = new TimeFlowDbContext();
+        List<Project> projects = ProjectService.GetAll();
 
-        var projects = db.Projects.ToList();
-
-        foreach (var project in projects)
+        foreach (Project project in projects)
         {
             Console.WriteLine($"[{projectCounter}] {project.Name}");
             projectCounter++;
@@ -136,8 +121,7 @@ public static class ProjectMenu
 
                 readInput = Console.ReadLine();
 
-                projects[i].Name = readInput;
-                db.SaveChanges();
+                ProjectService.Update(i, readInput);
 
                 Console.WriteLine();
                 Console.WriteLine("Project updated successfully!");
@@ -146,7 +130,7 @@ public static class ProjectMenu
         }
     }
 
-    static void DeleteProject()
+    private static void DeleteProject()
     {
         Console.WriteLine("========== Delete Project ==========");
         Console.WriteLine();
@@ -155,11 +139,9 @@ public static class ProjectMenu
 
         int projectCounter = 1;
 
-        using var db = new TimeFlowDbContext();
+        List<Project> projects = ProjectService.GetAll();
 
-        var projects = db.Projects.ToList();
-
-        foreach (var project in projects)
+        foreach (Project project in projects)
         {
             Console.WriteLine($"[{projectCounter}] {project.Name}");
             projectCounter++;
@@ -188,8 +170,7 @@ public static class ProjectMenu
 
                 if (readInput == "Y")
                 {
-                    db.Projects.Remove(projects[i]);
-                    db.SaveChanges();
+                    ProjectService.Delete(i);
 
                     Console.WriteLine("Project deleted successfully!");
                 }
