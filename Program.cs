@@ -282,7 +282,7 @@ class Program
                 ShowTimeEntries();
                 break;
             case "3":
-                //EditProject();
+                EditTimeEntry();
                 break;
             case "4":
                 //DeleteProject();
@@ -365,6 +365,7 @@ class Program
         var timeEntries = db.TimeEntries
             .Include(t => t.Project)
             .ToList();
+
         int timeEntryCounter = 0;
 
         foreach (var timeEntry in timeEntries)
@@ -380,5 +381,98 @@ class Program
             Console.WriteLine($"Start: {timeEntry.StartTime}");
             Console.WriteLine($"Duration: {(int)duration.TotalHours:00}:{(int)duration.Minutes:00}");
         }
+    }
+
+    static void EditTimeEntry()
+    {
+        Console.WriteLine("========== Edit Time Entry ==========");
+        Console.WriteLine();
+        Console.WriteLine("Available Time Entries: ");
+        Console.WriteLine();
+
+        using var db = new TimeFlowDbContext();
+
+        var timeEntries = db.TimeEntries
+            .Include(t => t.Project)
+            .ToList();
+
+        int timeEntryCounter = 0;
+
+        foreach (var timeEntry in timeEntries)
+        {
+            timeEntryCounter++;
+
+            TimeSpan duration = timeEntry.EndTime.Subtract(timeEntry.StartTime);
+
+            Console.WriteLine();
+            Console.WriteLine($"{timeEntryCounter}.");
+            Console.WriteLine($"Project: {timeEntry.Project.Name}");
+            Console.WriteLine($"Description: {timeEntry.Description}");
+            Console.WriteLine($"Start: {timeEntry.StartTime}");
+            Console.WriteLine($"Duration: {(int)duration.TotalHours:00}:{(int)duration.Minutes:00}");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Select a Time Entry: ");
+
+        string userInput = Console.ReadLine();
+        int timeEntryIndex = Int32.Parse(userInput) - 1;
+
+        Console.WriteLine();
+        Console.WriteLine("Current values:");
+        Console.WriteLine();
+        Console.WriteLine($"Description: {timeEntries[timeEntryIndex].Description}");
+        Console.WriteLine($"Start: {timeEntries[timeEntryIndex].StartTime}");
+        Console.WriteLine($"End: {timeEntries[timeEntryIndex].EndTime}");
+        Console.WriteLine($"Project: {timeEntries[timeEntryIndex].Project.Name}");
+        Console.WriteLine();
+        Console.WriteLine("What would you like to update?");
+        Console.WriteLine();
+        Console.WriteLine("1. Description");
+        Console.WriteLine("2. Start time");
+        Console.WriteLine("3. End time");
+        Console.WriteLine("4. Project");
+        Console.WriteLine();
+        Console.WriteLine("Select option:");
+        
+        userInput = Console.ReadLine();
+
+        switch (userInput)
+        {
+            case "1":
+                Console.WriteLine($"Current description: {timeEntries[timeEntryIndex].Description}");
+                Console.WriteLine();
+                Console.WriteLine("New description:");
+                string newDescription = Console.ReadLine();
+                timeEntries[timeEntryIndex].Description = newDescription;
+                break;
+            case "2":
+                Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
+                Console.WriteLine();
+                Console.WriteLine("New start date & time:");
+                string newStartTimeInput = Console.ReadLine();
+                DateTime newStartTime = DateTime.ParseExact(newStartTimeInput, "dd-MM-yyyy HH:mm", null);
+                timeEntries[timeEntryIndex].StartTime = newStartTime;
+                break;
+            case "3":
+                Console.WriteLine($"Current end date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].EndTime}");
+                Console.WriteLine();
+                Console.WriteLine("New end date & time:");
+                string newEndTimeInput = Console.ReadLine();
+                DateTime newEndTime = DateTime.ParseExact(newEndTimeInput, "dd-MM-yyyy HH:mm", null);
+                timeEntries[timeEntryIndex].EndTime = newEndTime;
+                break;
+            case "4":
+                Console.WriteLine("This feature is not possible yet.");
+                //Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");
+                //string newProject = Console.ReadLine();
+                //timeEntries[timeEntryIndex] = newProject;
+                break;
+            default:
+                // 
+                break;
+        }
+
+        db.SaveChanges();
     }
 }
