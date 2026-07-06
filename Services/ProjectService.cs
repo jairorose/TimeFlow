@@ -3,9 +3,9 @@ namespace TimeManagementSystem.Services;
 using System.Data.Common;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
-public static class ProjectService
+public class ProjectService
 {
-    public static void Create(string name)
+    public void Create(string name)
     {
         using var db = new TimeFlowDbContext(); // Make connection to the database
                 
@@ -18,7 +18,7 @@ public static class ProjectService
         db.SaveChanges();
     }
 
-    public static List<Project> GetAll()
+    public List<Project> GetAll()
     {
         using var db = new TimeFlowDbContext();
 
@@ -27,7 +27,7 @@ public static class ProjectService
         return projects;
     }
 
-    public static void Update(int id, string name)
+    public void Update(int id, string name)
     {
         using var db = new TimeFlowDbContext();
 
@@ -37,7 +37,7 @@ public static class ProjectService
         db.SaveChanges();
     }
 
-    public static void Delete(int id)
+    public void Delete(int id)
     {
         using var db = new TimeFlowDbContext();
 

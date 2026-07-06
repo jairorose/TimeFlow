@@ -5,6 +5,8 @@ using TimeManagementSystem.Services;
 
 public static class ProjectMenu
 {
+
+    private static readonly ProjectService projectService = new ProjectService();
     public static void Show()
     {
         Console.WriteLine("========== Projects ==========");
@@ -57,7 +59,7 @@ public static class ProjectMenu
             
             if (!string.IsNullOrEmpty(readInput))
             {
-                ProjectService.Create(readInput);
+                projectService.Create(readInput);
 
                 Console.WriteLine($"Project '{readInput}' created successfully!");
                 Console.WriteLine();
@@ -73,7 +75,7 @@ public static class ProjectMenu
 
         int projectCounter = 0;
 
-        List<Project> projects = ProjectService.GetAll();
+        List<Project> projects = projectService.GetAll();
 
         foreach (Project project in projects)
         {
@@ -94,7 +96,7 @@ public static class ProjectMenu
 
         int projectCounter = 1;
 
-        List<Project> projects = ProjectService.GetAll();
+        List<Project> projects = projectService.GetAll();
 
         foreach (Project project in projects)
         {
@@ -121,7 +123,7 @@ public static class ProjectMenu
 
                 readInput = Console.ReadLine();
 
-                ProjectService.Update(i, readInput);
+                projectService.Update(i, readInput);
 
                 Console.WriteLine();
                 Console.WriteLine("Project updated successfully!");
@@ -139,7 +141,7 @@ public static class ProjectMenu
 
         int projectCounter = 1;
 
-        List<Project> projects = ProjectService.GetAll();
+        List<Project> projects = projectService.GetAll();
 
         foreach (Project project in projects)
         {
@@ -170,7 +172,7 @@ public static class ProjectMenu
 
                 if (readInput == "Y")
                 {
-                    ProjectService.Delete(i);
+                    projectService.Delete(i);
 
                     Console.WriteLine("Project deleted successfully!");
                 }
