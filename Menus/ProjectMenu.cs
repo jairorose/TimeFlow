@@ -123,7 +123,7 @@ public static class ProjectMenu
 
                 readInput = Console.ReadLine();
 
-                projectService.Update(i, readInput);
+                projectService.Update(projects[i].Id, readInput);
 
                 Console.WriteLine();
                 Console.WriteLine("Project updated successfully!");
@@ -172,7 +172,7 @@ public static class ProjectMenu
 
                 if (readInput == "Y")
                 {
-                    projectService.Delete(i);
+                    projectService.Delete(projects[i].Id);
 
                     Console.WriteLine("Project deleted successfully!");
                 }

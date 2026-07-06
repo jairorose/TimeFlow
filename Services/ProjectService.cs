@@ -13,7 +13,7 @@ public class ProjectService
 
         return projects;
     }
-    
+
     public void Create(string name)
     {
         using var db = new TimeFlowDbContext(); // Make connection to the database
@@ -31,9 +31,9 @@ public class ProjectService
     {
         using var db = new TimeFlowDbContext();
 
-        List<Project> projects = GetAll();
+        Project project = db.Projects.Find(id);
 
-        projects[id].Name = name;
+        project.Name = name;
         db.SaveChanges();
     }
 
@@ -41,9 +41,9 @@ public class ProjectService
     {
         using var db = new TimeFlowDbContext();
 
-        List<Project> projects = GetAll();
+        Project project = db.Projects.Find(id);
 
-        projects.Remove(projects[id]);
+        db.Projects.Remove(project);
         db.SaveChanges();
     }
 }
