@@ -31,7 +31,7 @@ public static class ReportMenu
                 //ShowWeeklyReport();
                 break;
             case "3":
-                //ShowMonthlyReport();
+                ShowMonthlyReport();
                 break;
             case "4":
                 //ShowYearlyReport();
@@ -76,5 +76,36 @@ public static class ReportMenu
             Console.WriteLine($"Start: {timeEntry.StartTime}");
             Console.WriteLine($"Duration: {(int)duration.TotalHours:00}:{(int)duration.Minutes:00}");
         }
-    }  
+    }
+
+    private static void ShowMonthlyReport()
+    {
+        Console.WriteLine("========== Monthly Report ==========");
+        Console.WriteLine();
+        Console.Write("Enter date (mm-yyyy): ");
+
+        string userInput = Console.ReadLine();
+        Console.WriteLine();
+
+        DateTime month = DateTime.ParseExact(userInput, "MM-yyyy", null);
+
+        var timeEntries = reportService.GetEntriesByMonth(month);
+
+        int timeEntryCounter = 0;
+
+        foreach (var project in timeEntries)
+        {
+            Console.WriteLine();
+            Console.WriteLine(project.Key.Name);
+
+            TimeSpan duration = TimeSpan.Zero;
+
+            foreach (var timeEntry in project.Key.TimeEntries)
+            {
+                duration += timeEntry.EndTime.Subtract(timeEntry.StartTime);
+            }
+
+            Console.WriteLine($"Total time: {duration}");
+        }
+    }
 }
