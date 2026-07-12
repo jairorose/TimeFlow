@@ -34,7 +34,7 @@ public static class ReportMenu
                 ShowMonthlyReport();
                 break;
             case "4":
-                //ShowYearlyReport();
+                ShowYearlyReport();
                 break;
             case "5":
                 //ShowReportByProject();
@@ -50,6 +50,7 @@ public static class ReportMenu
 
     private static void ShowDailyReport()
     {
+        Console.WriteLine();
         Console.WriteLine("========== Daily Report ==========");
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
@@ -80,6 +81,7 @@ public static class ReportMenu
 
     private static void ShowMonthlyReport()
     {
+        Console.WriteLine();
         Console.WriteLine("========== Monthly Report ==========");
         Console.WriteLine();
         Console.Write("Enter date (mm-yyyy): ");
@@ -91,7 +93,35 @@ public static class ReportMenu
 
         var timeEntries = reportService.GetEntriesByMonth(month);
 
-        int timeEntryCounter = 0;
+        foreach (var project in timeEntries)
+        {
+            Console.WriteLine();
+            Console.WriteLine(project.Key.Name);
+
+            TimeSpan duration = TimeSpan.Zero;
+
+            foreach (var timeEntry in project.Key.TimeEntries)
+            {
+                duration += timeEntry.EndTime.Subtract(timeEntry.StartTime);
+            }
+
+            Console.WriteLine($"Total time: {duration}");
+        }
+    }
+
+    private static void ShowYearlyReport()
+    {
+        Console.WriteLine();
+        Console.WriteLine("========== Yearly Report ==========");
+        Console.WriteLine();
+        Console.Write("Enter year (yyyy): ");
+
+        string userInput = Console.ReadLine();
+        Console.WriteLine();
+
+        DateTime year = DateTime.ParseExact(userInput, "yyyy", null);
+
+        var timeEntries = reportService.GetEntriesByYear(year);
 
         foreach (var project in timeEntries)
         {

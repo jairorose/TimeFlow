@@ -6,6 +6,15 @@ public static class MainMenu
     {
         do
         {
+            Console.WriteLine("");
+            Console.WriteLine("========================================");
+            Console.WriteLine("         TimeFlow v1.0");
+            Console.WriteLine("    Personal Time Management System");
+            Console.WriteLine("========================================");
+            Console.WriteLine("");
+            Console.WriteLine("Track your time. Own your workflow.");
+            Console.WriteLine("");
+
             Console.WriteLine("1. Projects");
             Console.WriteLine("2. Time Entries");
             Console.WriteLine("3. Reports");

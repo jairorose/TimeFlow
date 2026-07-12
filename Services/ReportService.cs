@@ -42,4 +42,19 @@ public class ReportService
         
         return timeEntries;
     }
+
+    public List<IGrouping<Project, TimeEntry>> GetEntriesByYear(DateTime year)
+    {
+        using var db = new TimeFlowDbContext();
+
+        DateTime end = year.AddYears(1);
+
+        var timeEntries = db.TimeEntries
+            .Include(t => t.Project)
+            .Where(t => t.StartTime >= year && t.StartTime < end)
+            .GroupBy(t => t.Project)
+            .ToList();
+        
+        return timeEntries;
+    }
 }
