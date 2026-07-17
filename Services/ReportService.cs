@@ -28,6 +28,24 @@ public class ReportService
         return timeEntriesReport;
     }
 
+    public List<IGrouping<Project, TimeEntry>> GetEntriesByWeek(DateTime date)
+    {
+        int difference = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
+
+        DateTime start = date.Date.AddDays(-difference);
+        DateTime endExclusive = start.AddDays(7);
+
+        using var db = new TimeFlowDbContext();
+
+        var timeEntries = db.TimeEntries
+            .Include(t => t.Project)
+            .Where(t => t.StartTime >= start && t.StartTime < endExclusive)
+            .GroupBy(t => t.Project)
+            .ToList();
+        
+        return timeEntries;
+    }
+
     public List<IGrouping<Project, TimeEntry>> GetEntriesByMonth(DateTime month)
     {
         using var db = new TimeFlowDbContext();

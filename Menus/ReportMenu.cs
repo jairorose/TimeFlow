@@ -28,7 +28,7 @@ public static class ReportMenu
                 ShowDailyReport();
                 break;
             case "2":
-                //ShowWeeklyReport();
+                ShowWeeklyReport();
                 break;
             case "3":
                 ShowMonthlyReport();
@@ -76,6 +76,43 @@ public static class ReportMenu
             Console.WriteLine($"Description: {timeEntry.Description}");
             Console.WriteLine($"Start: {timeEntry.StartTime}");
             Console.WriteLine($"Duration: {(int)duration.TotalHours:00}:{(int)duration.Minutes:00}");
+        }
+    }
+
+    private static void ShowWeeklyReport()
+    {
+        Console.WriteLine();
+        Console.WriteLine("========== Weekly Report ==========");
+        Console.WriteLine();
+        Console.Write("Enter date (dd-mm-yyyy): ");
+
+        string userInput = Console.ReadLine();
+        Console.WriteLine();
+
+        DateTime date = DateTime.ParseExact(userInput, "dd-MM-yyyy", null);
+
+        // Show user start date of the week and end date of the week
+        int difference = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
+
+        DateTime start = date.Date.AddDays(-difference);
+        DateTime end = start.AddDays(6);
+        Console.WriteLine($"Time entries monday {start:dd-MM-yyyy} to sunday {end:dd-MM-yyyy}:");
+
+        var timeEntries = reportService.GetEntriesByWeek(date);
+
+        foreach (var project in timeEntries)
+        {
+            Console.WriteLine();
+            Console.WriteLine(project.Key.Name);
+
+            TimeSpan duration = TimeSpan.Zero;
+
+            foreach (var timeEntry in project.Key.TimeEntries)
+            {
+                duration += timeEntry.EndTime.Subtract(timeEntry.StartTime);
+            }
+
+            Console.WriteLine($"Total time: {duration}");
         }
     }
 
