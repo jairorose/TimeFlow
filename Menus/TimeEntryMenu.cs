@@ -85,8 +85,29 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        string userInput = Console.ReadLine(); // Validate
-        int projectIndex = Int32.Parse(userInput) - 1;
+        int projectNumber;
+
+        // Validate user input
+        while (true)
+        {
+            string readInput = Console.ReadLine();
+
+            int minOption = 1;
+            int maxOption = projects.Count;
+
+            projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (projectNumber != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
+
+        int projectIndex = projectNumber - 1;
         int projectId = projects[projectIndex].Id;
 
         // Get the description of the time entry
@@ -202,8 +223,29 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a Time Entry: ");
 
-        string userInput = Console.ReadLine(); // Validate
-        int timeEntryIndex = Int32.Parse(userInput) - 1;
+        int timeEntryNumber;
+
+        // Validate user input
+        while (true)
+        {
+            string readInput = Console.ReadLine();
+
+            int minOption = 1;
+            int maxOption = timeEntries.Count;
+
+            timeEntryNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (timeEntryNumber != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
+
+        int timeEntryIndex = timeEntryNumber - 1;
 
         Console.WriteLine();
         Console.WriteLine("Current values:");
@@ -332,9 +374,30 @@ public static class TimeEntryMenu
                 }
 
                 Console.WriteLine("New Project:");
+                
+                int projectNumber;
 
-                string newProject = Console.ReadLine(); // Validate
-                int projectId = Int32.Parse(newProject) - 1; // -1 because zero based index
+                // Validate user input
+                while (true)
+                {
+                    string readInput = Console.ReadLine();
+
+                    int minOption = 1;
+                    int maxOption = projects.Count;
+
+                    projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+                    if (projectNumber != -1)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+                    }
+                }
+
+                int projectId = projectNumber - 1; // -1 because zero based index
 
                 timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
                 break;
@@ -372,14 +435,30 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a time entry number");
 
-        string readInput = Console.ReadLine(); // Validate
+        int timeEntryNumber;
 
-        // Convert user input to real number
-        int userInput = Int32.Parse(readInput);
+        while (true)
+        {
+            string readInput = Console.ReadLine();
+
+            int minOption = 1;
+            int maxOption = timeEntries.Count;
+
+            timeEntryNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (timeEntryNumber != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
 
         for(int i = 0; i < timeEntries.Count; i++)
         {
-            if (userInput-1 == i)
+            if (timeEntryNumber-1 == i)
             {
                 Console.WriteLine();
                 Console.WriteLine($"Are you sure you want to delete: ");
@@ -394,7 +473,7 @@ public static class TimeEntryMenu
 
                 do
                 {
-                    readInput = Console.ReadLine();
+                    string readInput = Console.ReadLine();
                     
                     validInput = StringValidator.GetValidString(readInput, out choice);
                     

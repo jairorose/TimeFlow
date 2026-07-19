@@ -25,7 +25,7 @@ public static class MainMenu
             Console.WriteLine("");
             Console.WriteLine("Select an option:");
 
-            int choice = -1;
+            int choice;
 
             while (true)
             {

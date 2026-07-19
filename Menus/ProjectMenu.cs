@@ -132,14 +132,30 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        string readInput = Console.ReadLine(); // Validate
+        int projectNumber;
 
-        // Convert user input to real number
-        int userInput = Int32.Parse(readInput);
+        while (true)
+        {
+            string readInput = Console.ReadLine();
+
+            int minOption = 1;
+            int maxOption = projects.Count;
+
+            projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (projectNumber != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
 
         for (int i = 0; i < projects.Count; i++)
         {
-            if (userInput-1 == i)
+            if (projectNumber-1 == i)
             {
                 Console.WriteLine();
                 Console.WriteLine($"Current project name: {projects[i].Name}");
@@ -151,7 +167,7 @@ public static class ProjectMenu
 
                 do
                 {
-                    readInput = Console.ReadLine();
+                    string readInput = Console.ReadLine();
                     
                     validInput = StringValidator.GetValidString(readInput, out projectName);
                     
@@ -162,7 +178,7 @@ public static class ProjectMenu
 
                 } while (!validInput);
 
-                projectService.Update(projects[i].Id, readInput);
+                projectService.Update(projects[i].Id, projectName);
 
                 Console.WriteLine();
                 Console.WriteLine("Project updated successfully!");

@@ -72,7 +72,7 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
 
-        string userInput = Console.ReadLine();
+        string userInput = Console.ReadLine(); // Validate
         Console.WriteLine();
 
         DateTime day = DateTime.ParseExact(userInput, "dd-MM-yyyy", null);
@@ -103,7 +103,7 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
 
-        string userInput = Console.ReadLine();
+        string userInput = Console.ReadLine(); // Validate
         Console.WriteLine();
 
         DateTime date = DateTime.ParseExact(userInput, "dd-MM-yyyy", null);
@@ -140,7 +140,7 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (mm-yyyy): ");
 
-        string userInput = Console.ReadLine();
+        string userInput = Console.ReadLine(); // Validate
         Console.WriteLine();
 
         DateTime month = DateTime.ParseExact(userInput, "MM-yyyy", null);
@@ -170,7 +170,7 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter year (yyyy): ");
 
-        string userInput = Console.ReadLine();
+        string userInput = Console.ReadLine(); // Validate
         Console.WriteLine();
 
         DateTime year = DateTime.ParseExact(userInput, "yyyy", null);
