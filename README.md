@@ -101,7 +101,7 @@ Version Control
 ### Clone repository
 
 ```bash
-git clone https://github.com/username/TimeFlow.git
+git clone https://github.com/jairorose/TimeFlow.git
 ```
 
 ### Navigate
