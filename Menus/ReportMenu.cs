@@ -1,5 +1,6 @@
 using TimeManagementSystem.Models;
 using TimeManagementSystem.Services;
+using TimeManagementSystem.Services.Validators;
 
 namespace TimeManagementSystem.Menus;
 
@@ -15,31 +16,47 @@ public static class ReportMenu
         Console.WriteLine("2. Weekly Report");
         Console.WriteLine("3. Monthly Report");
         Console.WriteLine("4. Yearly Report");
-        Console.WriteLine("5. Report by project");
-        Console.WriteLine("6. Back to Main Menu");
+        Console.WriteLine();
+        Console.WriteLine("0. Back to Main Menu");
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
-        string readInput = Console.ReadLine();
+        int choice= -1;
 
-        switch (readInput)
+        while (true)
         {
-            case "1":
+            string readInput = Console.ReadLine();
+
+            int minOption = 0;
+            int maxOption = 4;
+
+            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (choice != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
+
+        switch (choice)
+        {
+            case 1:
                 ShowDailyReport();
                 break;
-            case "2":
+            case 2:
                 ShowWeeklyReport();
                 break;
-            case "3":
+            case 3:
                 ShowMonthlyReport();
                 break;
-            case "4":
+            case 4:
                 ShowYearlyReport();
                 break;
-            case "5":
-                //ShowReportByProject();
-                break;
-            case "6":
+            case 0:
                 MainMenu.Show();
                 break;
             default:
@@ -55,10 +72,22 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
 
-        string userInput = Console.ReadLine();
-        Console.WriteLine();
+        DateTime day;
+        bool validDate;
+                
+        do
+        {
+            string readInput = Console.ReadLine();
 
-        DateTime day = DateTime.ParseExact(userInput, "dd-MM-yyyy", null);
+            validDate = DateTimeValidator.GetValidDate(readInput, out day);
+
+            if (!validDate)
+            {
+                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy (e.g. 19-07-2026)");
+            }
+        } while (!validDate);
+
+        Console.WriteLine();
 
         List<TimeEntry> timeEntries = reportService.GetEntriesByDay(day);
 
@@ -85,11 +114,23 @@ public static class ReportMenu
         Console.WriteLine("========== Weekly Report ==========");
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
+        
+        DateTime date;
+        bool validDate;
+                
+        do
+        {
+            string readInput = Console.ReadLine();
 
-        string userInput = Console.ReadLine();
+            validDate = DateTimeValidator.GetValidDate(readInput, out date);
+
+            if (!validDate)
+            {
+                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy (e.g. 19-07-2026)");
+            }
+        } while (!validDate);
+
         Console.WriteLine();
-
-        DateTime date = DateTime.ParseExact(userInput, "dd-MM-yyyy", null);
 
         // Show user start date of the week and end date of the week
         int difference = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
@@ -123,10 +164,22 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (mm-yyyy): ");
 
-        string userInput = Console.ReadLine();
-        Console.WriteLine();
+        DateTime month;
+        bool validDate;
+                
+        do
+        {
+            string readInput = Console.ReadLine();
 
-        DateTime month = DateTime.ParseExact(userInput, "MM-yyyy", null);
+            validDate = DateTimeValidator.GetValidMonth(readInput, out month);
+
+            if (!validDate)
+            {
+                Console.WriteLine("Invalid date format. Please use following format: MM-yyyy (e.g. 07-2026)");
+            }
+        } while (!validDate);
+
+        Console.WriteLine();
 
         var timeEntries = reportService.GetEntriesByMonth(month);
 
@@ -153,10 +206,22 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter year (yyyy): ");
 
-        string userInput = Console.ReadLine();
-        Console.WriteLine();
+        DateTime year;
+        bool validDate;
+                
+        do
+        {
+            string readInput = Console.ReadLine();
 
-        DateTime year = DateTime.ParseExact(userInput, "yyyy", null);
+            validDate = DateTimeValidator.GetValidYear(readInput, out year);
+
+            if (!validDate)
+            {
+                Console.WriteLine("Invalid date format. Please use following format: yyyy (e.g. 2026)");
+            }
+        } while (!validDate);
+
+        Console.WriteLine();
 
         var timeEntries = reportService.GetEntriesByYear(year);
 

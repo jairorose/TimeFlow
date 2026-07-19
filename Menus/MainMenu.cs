@@ -1,3 +1,5 @@
+using TimeManagementSystem.Services.Validators;
+
 namespace TimeManagementSystem.Menus;
 
 public static class MainMenu
@@ -18,38 +20,53 @@ public static class MainMenu
             Console.WriteLine("1. Projects");
             Console.WriteLine("2. Time Entries");
             Console.WriteLine("3. Reports");
-            Console.WriteLine("4. Settings");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine();
+            Console.WriteLine("0. Exit");
             Console.WriteLine("");
-            Console.WriteLine("Select an option");
+            Console.WriteLine("Select an option:");
 
-            string readInput = Console.ReadLine();
+            int choice;
 
-            switch (readInput)
+            while (true)
             {
-                case "1":
+                string readInput = Console.ReadLine();
+
+                int minOption = 0;
+                int maxOption = 4;
+
+                choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+                if (choice != -1)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+                }
+            }
+
+            switch (choice)
+            {
+                case 1:
                     ProjectMenu.Show();
                     break;
-                case "2":
+                case 2:
                     TimeEntryMenu.Show();
                     break;
-                case "3":
+                case 3:
                     ReportMenu.Show();
                     break;
-                case "4":
-                    //ShowSettingMenu();
-                    break;
-                case "5":
+                case 0:
                     //Exit();
                     break;
                 default:
-                    Console.WriteLine("Optie niet herkent");
-                    break; 
+                    throw new InvalidOperationException("Unexpected menu option"); 
             }
 
             Console.WriteLine();
             Console.WriteLine("Press Enter to continue...");
-            readInput = Console.ReadLine();
+            Console.ReadLine();
         } while (true);
     }
 }
