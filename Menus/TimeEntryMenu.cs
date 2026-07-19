@@ -206,14 +206,36 @@ public static class TimeEntryMenu
         Console.WriteLine("3. End time");
         Console.WriteLine("4. Project");
         Console.WriteLine();
+        Console.WriteLine("0. Back");
+        Console.WriteLine();
         Console.WriteLine("Select option:");
-        
-        userInput = Console.ReadLine();
+
+        int choice = -1;
+
+        while (true)
+        {
+            string readInput = Console.ReadLine();
+
+            int minOption = 0;
+            int maxOption = 4;
+
+            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (choice != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
+
         bool validDateTime;
 
-        switch (userInput)
+        switch (choice)
         {
-            case "1":
+            case 1:
                 Console.WriteLine($"Current description: {timeEntries[timeEntryIndex].Description}");
                 Console.WriteLine();
                 Console.WriteLine("New description:");
@@ -221,7 +243,7 @@ public static class TimeEntryMenu
                 string newDescription = Console.ReadLine();
                 timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
                 break;
-            case "2":
+            case 2:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
                 Console.WriteLine();
                 Console.WriteLine("New start date & time:");
@@ -242,7 +264,7 @@ public static class TimeEntryMenu
 
                 timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
-            case "3":
+            case 3:
                 Console.WriteLine($"Current end date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].EndTime}");
                 Console.WriteLine();
                 Console.WriteLine("New end date & time:");
@@ -263,7 +285,7 @@ public static class TimeEntryMenu
 
                 timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
                 break;
-            case "4":
+            case 4:
                 Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");
                 Console.WriteLine();
                 Console.WriteLine("Available Projects: ");
@@ -286,9 +308,10 @@ public static class TimeEntryMenu
 
                 timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
                 break;
-            default:
-                // 
+            case 0:
                 break;
+            default:
+                throw new InvalidOperationException("Unexpected menu option");
         }
     }
 

@@ -25,7 +25,7 @@ public static class MainMenu
             Console.WriteLine("");
             Console.WriteLine("Select an option:");
 
-            int choice= -1;
+            int choice = -1;
 
             while (true)
             {
@@ -64,9 +64,9 @@ public static class MainMenu
                     throw new InvalidOperationException("Unexpected menu option"); 
             }
 
-            // Console.WriteLine();
-            // Console.WriteLine("Press Enter to continue...");
-            // readInput = Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
         } while (true);
     }
 }
