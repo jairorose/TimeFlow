@@ -99,15 +99,37 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Start Date & Time (dd-MM-yyyy HH:mm):");
 
-        string readInput = Console.ReadLine();
-        DateTime startTime = DateTime.ParseExact(readInput, "dd-MM-yyyy HH:mm", null);
+        DateTime startTime;
+        DateTime endTime;
+        bool validDateTime = false;
+
+        do
+        {
+            string readInput = Console.ReadLine();
+
+            validDateTime = DateTimeValidator.GetValidDateTime(readInput, out startTime);
+
+            if (!validDateTime)
+            {
+                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+            }
+        } while (!validDateTime);
 
         // Get the end time of the time entry
         Console.WriteLine();
         Console.WriteLine("End Date & Time   (dd-MM-yyyy HH:mm):");
 
-        readInput = Console.ReadLine();
-        DateTime endTime = DateTime.ParseExact(readInput, "dd-MM-yyyy HH:mm", null);
+        do
+        {
+            string readInput = Console.ReadLine();
+
+            validDateTime = DateTimeValidator.GetValidDateTime(readInput, out endTime);
+
+            if (!validDateTime)
+            {
+                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+            }
+        } while (!validDateTime);
 
         timeEntryService.Create(description, startTime, endTime, projectId);
 
