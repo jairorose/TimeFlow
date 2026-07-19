@@ -101,7 +101,7 @@ public static class TimeEntryMenu
 
         DateTime startTime;
         DateTime endTime;
-        bool validDateTime = false;
+        bool validDateTime;
 
         do
         {
@@ -209,6 +209,7 @@ public static class TimeEntryMenu
         Console.WriteLine("Select option:");
         
         userInput = Console.ReadLine();
+        bool validDateTime;
 
         switch (userInput)
         {
@@ -225,8 +226,20 @@ public static class TimeEntryMenu
                 Console.WriteLine();
                 Console.WriteLine("New start date & time:");
 
-                string newStartTimeInput = Console.ReadLine();
-                DateTime newStartTime = DateTime.ParseExact(newStartTimeInput, "dd-MM-yyyy HH:mm", null);
+                DateTime newStartTime;
+                
+                do
+                {
+                    string readInput = Console.ReadLine();
+
+                    validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newStartTime);
+
+                    if (!validDateTime)
+                    {
+                        Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+                    }
+                } while (!validDateTime);
+
                 timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
             case "3":
@@ -234,8 +247,20 @@ public static class TimeEntryMenu
                 Console.WriteLine();
                 Console.WriteLine("New end date & time:");
 
-                string newEndTimeInput = Console.ReadLine();
-                DateTime newEndTime = DateTime.ParseExact(newEndTimeInput, "dd-MM-yyyy HH:mm", null);
+                DateTime newEndTime;
+                
+                do
+                {
+                    string readInput = Console.ReadLine();
+
+                    validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newEndTime);
+
+                    if (!validDateTime)
+                    {
+                        Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+                    }
+                } while (!validDateTime);
+
                 timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
                 break;
             case "4":
