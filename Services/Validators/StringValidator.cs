@@ -11,7 +11,7 @@ public static class StringValidator
             return false;
         }
 
-        if (validString.Length < maxLength)
+        if (validString.Length > maxLength)
         {
             return false;
         }
