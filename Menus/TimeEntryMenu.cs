@@ -2,6 +2,7 @@ namespace TimeManagementSystem.Menus;
 
 using TimeManagementSystem.Models;
 using TimeManagementSystem.Services;
+using TimeManagementSystem.Services.Validators;
 
 public static class TimeEntryMenu
 {
@@ -16,27 +17,47 @@ public static class TimeEntryMenu
         Console.WriteLine("2. View Time Entries");
         Console.WriteLine("3. Edit Time Entry");
         Console.WriteLine("4. Delete Time Entry");
-        Console.WriteLine("5. Back to Main Menu");
+        Console.WriteLine();
+        Console.WriteLine("0. Back to Main Menu");
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
-        string readInput = Console.ReadLine();
+        int choice= -1;
 
-        switch (readInput)
+        while (true)
         {
-            case "1":
+            string readInput = Console.ReadLine();
+
+            int minOption = 0;
+            int maxOption = 4;
+
+            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (choice != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
+
+        switch (choice)
+        {
+            case 1:
                 CreateTimeEntry();
                 break;
-            case "2":
+            case 2:
                 ShowTimeEntries();
                 break;
-            case "3":
+            case 3:
                 EditTimeEntry();
                 break;
-            case "4":
+            case 4:
                 DeleteTimeEntry();
                 break;
-            case "5":
+            case 0:
                 MainMenu.Show();
                 break;
             default:

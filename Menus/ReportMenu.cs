@@ -1,5 +1,6 @@
 using TimeManagementSystem.Models;
 using TimeManagementSystem.Services;
+using TimeManagementSystem.Services.Validators;
 
 namespace TimeManagementSystem.Menus;
 
@@ -15,31 +16,47 @@ public static class ReportMenu
         Console.WriteLine("2. Weekly Report");
         Console.WriteLine("3. Monthly Report");
         Console.WriteLine("4. Yearly Report");
-        Console.WriteLine("5. Report by project");
-        Console.WriteLine("6. Back to Main Menu");
+        Console.WriteLine();
+        Console.WriteLine("0. Back to Main Menu");
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
-        string readInput = Console.ReadLine();
+        int choice= -1;
 
-        switch (readInput)
+        while (true)
         {
-            case "1":
+            string readInput = Console.ReadLine();
+
+            int minOption = 0;
+            int maxOption = 4;
+
+            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+
+            if (choice != -1)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+            }
+        }
+
+        switch (choice)
+        {
+            case 1:
                 ShowDailyReport();
                 break;
-            case "2":
+            case 2:
                 ShowWeeklyReport();
                 break;
-            case "3":
+            case 3:
                 ShowMonthlyReport();
                 break;
-            case "4":
+            case 4:
                 ShowYearlyReport();
                 break;
-            case "5":
-                //ShowReportByProject();
-                break;
-            case "6":
+            case 0:
                 MainMenu.Show();
                 break;
             default:
