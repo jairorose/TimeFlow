@@ -60,33 +60,37 @@ public static class ProjectMenu
                 MainMenu.Show();
                 break;
             default:
-                //
+                // Add exception
                 break;
         }
     }
 
     private static void CreateProject()
     {
-        string readInput = "";
+        Console.WriteLine("========== Create Project ==========");
+        Console.WriteLine();
+        Console.WriteLine("Enter project name:");
+
+        string projectName;
+        bool validInput;
 
         do
         {
-            Console.WriteLine("========== Create Project ==========");
-            Console.WriteLine();
-            Console.WriteLine("Enter project name:");
-
-            readInput = Console.ReadLine();
-            readInput = readInput.Trim(' ');
+            string readInput = Console.ReadLine();
             
-            if (!string.IsNullOrEmpty(readInput))
+            validInput = StringValidator.GetValidString(readInput, out projectName);
+            
+            if (!validInput)
             {
-                projectService.Create(readInput);
-
-                Console.WriteLine($"Project '{readInput}' created successfully!");
-                Console.WriteLine();
+                Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
             }
 
-        } while (string.IsNullOrEmpty(readInput));
+        } while (!validInput);
+
+        projectService.Create(projectName);
+
+        Console.WriteLine($"Project '{projectName}' created successfully!");
+        Console.WriteLine();
     }
 
     private static void ShowProjects()
@@ -128,12 +132,12 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        string readInput = Console.ReadLine();
+        string readInput = Console.ReadLine(); // Validate
 
         // Convert user input to real number
         int userInput = Int32.Parse(readInput);
 
-        for(int i = 0; i < projects.Count; i++)
+        for (int i = 0; i < projects.Count; i++)
         {
             if (userInput-1 == i)
             {
@@ -142,7 +146,21 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("Enter new project name:");
 
-                readInput = Console.ReadLine();
+                string projectName;
+                bool validInput;
+
+                do
+                {
+                    readInput = Console.ReadLine();
+                    
+                    validInput = StringValidator.GetValidString(readInput, out projectName);
+                    
+                    if (!validInput)
+                    {
+                        Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
+                    }
+
+                } while (!validInput);
 
                 projectService.Update(projects[i].Id, readInput);
 
@@ -173,7 +191,7 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        string readInput = Console.ReadLine();
+        string readInput = Console.ReadLine(); // Validate
 
         // Convert user input to real number
         int userInput = Int32.Parse(readInput);
@@ -187,11 +205,25 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("(Y/N):");
 
-                readInput = Console.ReadLine();
+                string choice;
+                bool validInput;
+
+                do
+                {
+                    readInput = Console.ReadLine();
+                    
+                    validInput = StringValidator.GetValidString(readInput, out choice);
+                    
+                    if (!validInput)
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+
+                } while (!validInput);
 
                 Console.WriteLine();
 
-                if (readInput == "Y")
+                if (choice == "Y")
                 {
                     projectService.Delete(projects[i].Id);
 

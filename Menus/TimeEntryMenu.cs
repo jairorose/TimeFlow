@@ -61,7 +61,7 @@ public static class TimeEntryMenu
                 MainMenu.Show();
                 break;
             default:
-                //
+                // Add exception
                 break;
         }
     }
@@ -85,7 +85,7 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        string userInput = Console.ReadLine();
+        string userInput = Console.ReadLine(); // Validate
         int projectIndex = Int32.Parse(userInput) - 1;
         int projectId = projects[projectIndex].Id;
 
@@ -93,7 +93,21 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Add a description:");
         
-        string description = Console.ReadLine();
+        string description;
+        bool validInput;
+
+        do
+        {
+            string readInput = Console.ReadLine();
+            
+            validInput = StringValidator.GetValidString(readInput, out description);
+            
+            if (!validInput)
+            {
+                Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
+            }
+
+        } while (!validInput);
 
         // Get the start time of the time entry
         Console.WriteLine();
@@ -188,7 +202,7 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a Time Entry: ");
 
-        string userInput = Console.ReadLine();
+        string userInput = Console.ReadLine(); // Validate
         int timeEntryIndex = Int32.Parse(userInput) - 1;
 
         Console.WriteLine();
@@ -240,7 +254,23 @@ public static class TimeEntryMenu
                 Console.WriteLine();
                 Console.WriteLine("New description:");
 
-                string newDescription = Console.ReadLine();
+                string newDescription;
+                bool validInput;
+                int maxLengthDescription = 75;
+
+                do
+                {
+                    string readInput = Console.ReadLine();
+                    
+                    validInput = StringValidator.GetValidString(readInput, out newDescription, maxLengthDescription);
+                    
+                    if (!validInput)
+                    {
+                        Console.WriteLine($"Invalid input. Value cannot be empty and must be {maxLengthDescription} characters or less.");
+                    }
+
+                } while (!validInput);
+
                 timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
                 break;
             case 2:
@@ -303,7 +333,7 @@ public static class TimeEntryMenu
 
                 Console.WriteLine("New Project:");
 
-                string newProject = Console.ReadLine();
+                string newProject = Console.ReadLine(); // Validate
                 int projectId = Int32.Parse(newProject) - 1; // -1 because zero based index
 
                 timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
@@ -342,7 +372,7 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a time entry number");
 
-        string readInput = Console.ReadLine();
+        string readInput = Console.ReadLine(); // Validate
 
         // Convert user input to real number
         int userInput = Int32.Parse(readInput);
@@ -359,11 +389,25 @@ public static class TimeEntryMenu
                 Console.WriteLine();
                 Console.WriteLine("(Y/N):");
 
-                readInput = Console.ReadLine();
+                string choice;
+                bool validInput;
+
+                do
+                {
+                    readInput = Console.ReadLine();
+                    
+                    validInput = StringValidator.GetValidString(readInput, out choice);
+                    
+                    if (!validInput)
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+
+                } while (!validInput);
 
                 Console.WriteLine();
 
-                if (readInput == "Y")
+                if (choice == "Y")
                 {
                     timeEntryService.DeleteTimeEntry(timeEntries[i].Id);
 
