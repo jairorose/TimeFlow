@@ -80,7 +80,16 @@ public static class ProjectMenu
             
             validInput = StringValidator.GetValidString(readInput, out projectName);
             
-            if (!validInput)
+            if (validInput)
+            {
+                validInput = projectService.ValidateProjectName(projectName);
+
+                if (!validInput)
+                {
+                    Console.WriteLine("Invalid input. Make sure project name doesn't already exist.");
+                }
+            }
+            else
             {
                 Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
             }
@@ -174,6 +183,13 @@ public static class ProjectMenu
                     if (!validInput)
                     {
                         Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
+                    }
+                    
+                    validInput = projectService.ValidateProjectName(projectName);
+
+                    if (!validInput)
+                    {
+                        Console.WriteLine("Invalid input. Make sure project name doesn't already exist.");
                     }
 
                 } while (!validInput);

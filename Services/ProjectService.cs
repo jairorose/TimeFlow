@@ -46,4 +46,19 @@ public class ProjectService
         db.Projects.Remove(project);
         db.SaveChanges();
     }
+
+    public bool ValidateProjectName(string name)
+    {
+        List<Project> projects = GetAll();
+
+        foreach (Project project in projects)
+        {
+            if (project.Name == name)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
