@@ -160,10 +160,21 @@ public static class TimeEntryMenu
 
             validDateTime = DateTimeValidator.GetValidDateTime(readInput, out endTime);
 
-            if (!validDateTime)
+            if (validDateTime)
+            {
+                validDateTime = timeEntryService.ValidateEndTime(startTime, endTime);
+
+                if (!validDateTime)
+                {
+                    Console.WriteLine("Invalid date. Make sure end time is later then start time and not longer then 24 hours.");
+                }
+            }
+            else
             {
                 Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
             }
+
+            
         } while (!validDateTime);
 
         timeEntryService.Create(description, startTime, endTime, projectId);
@@ -317,9 +328,11 @@ public static class TimeEntryMenu
                 break;
             case 2:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
+                Console.WriteLine($"Current end date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].EndTime}");
                 Console.WriteLine();
                 Console.WriteLine("New start date & time:");
 
+                DateTime endTime = timeEntries[timeEntryIndex].EndTime;
                 DateTime newStartTime;
                 
                 do
@@ -328,7 +341,16 @@ public static class TimeEntryMenu
 
                     validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newStartTime);
 
-                    if (!validDateTime)
+                    if (validDateTime)
+                    {
+                        validDateTime = timeEntryService.ValidateStartTime(newStartTime, endTime);
+
+                        if (!validDateTime)
+                        {
+                            Console.WriteLine("Invalid date. Make sure start time is earlier then end time and duration is not longer then 24 hours.");
+                        }
+                    }
+                    else
                     {
                         Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
                     }
@@ -337,10 +359,12 @@ public static class TimeEntryMenu
                 timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
             case 3:
+                Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
                 Console.WriteLine($"Current end date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].EndTime}");
                 Console.WriteLine();
                 Console.WriteLine("New end date & time:");
 
+                DateTime startTime = timeEntries[timeEntryIndex].StartTime;
                 DateTime newEndTime;
                 
                 do
@@ -349,13 +373,24 @@ public static class TimeEntryMenu
 
                     validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newEndTime);
 
-                    if (!validDateTime)
+                    if (validDateTime)
+                    {
+                        validDateTime = timeEntryService.ValidateEndTime(startTime, newEndTime);
+
+                        if (!validDateTime)
+                        {
+                            Console.WriteLine("Invalid date. Make sure end time is later then start time and not longer then 24 hours.");
+                        }
+                    }
+                    else
                     {
                         Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
                     }
+                    
                 } while (!validDateTime);
 
                 timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
+                Console.WriteLine("End time is succesfully updated!");
                 break;
             case 4:
                 Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");

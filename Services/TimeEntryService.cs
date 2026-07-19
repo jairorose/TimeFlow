@@ -91,4 +91,46 @@ public class TimeEntryService
         db.TimeEntries.Remove(timeEntry);
         db.SaveChanges();
     }
+
+    public bool ValidateStartTime(DateTime start, DateTime end)
+    {
+        if (DateTime.Compare(start, end) < 0)
+        {
+            DateTime maxDateTime = end.AddHours(-24); 
+
+            if (DateTime.Compare(maxDateTime, start) < 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool ValidateEndTime(DateTime start, DateTime end)
+    {
+        if (DateTime.Compare(start, end) < 0)
+        {
+            DateTime maxDateTime = start.AddHours(24);
+
+            if (DateTime.Compare(end, maxDateTime) < 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
