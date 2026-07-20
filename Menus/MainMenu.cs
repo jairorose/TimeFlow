@@ -1,3 +1,4 @@
+using TimeManagementSystem.Services;
 using TimeManagementSystem.Services.Validators;
 
 namespace TimeManagementSystem.Menus;
@@ -25,26 +26,9 @@ public static class MainMenu
             Console.WriteLine("");
             Console.WriteLine("Select an option:");
 
-            int choice;
-
-            while (true)
-            {
-                string readInput = Console.ReadLine();
-
-                int minOption = 0;
-                int maxOption = 4;
-
-                choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-                if (choice != -1)
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-                }
-            }
+            int minOption = 0;
+            int maxOption = 3;
+            int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
             switch (choice)
             {

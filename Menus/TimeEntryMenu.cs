@@ -22,26 +22,10 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
-        int choice= -1;
+        int minOption = 0;
+        int maxOption = 4;
 
-        while (true)
-        {
-            string readInput = Console.ReadLine();
-
-            int minOption = 0;
-            int maxOption = 4;
-
-            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-            if (choice != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         switch (choice)
         {
@@ -85,27 +69,10 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        int projectNumber;
+        int minOption = 1;
+        int maxOption = projects.Count;
 
-        // Validate user input
-        while (true)
-        {
-            string readInput = Console.ReadLine();
-
-            int minOption = 1;
-            int maxOption = projects.Count;
-
-            projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-            if (projectNumber != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        int projectNumber = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         int projectIndex = projectNumber - 1;
         int projectId = projects[projectIndex].Id;
@@ -234,27 +201,32 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a Time Entry: ");
 
-        int timeEntryNumber;
+        // int timeEntryNumber;
 
-        // Validate user input
-        while (true)
-        {
-            string readInput = Console.ReadLine();
+        // // Validate user input
+        // while (true)
+        // {
+        //     string readInput = Console.ReadLine();
 
-            int minOption = 1;
-            int maxOption = timeEntries.Count;
+        //     int minOption = 1;
+        //     int maxOption = timeEntries.Count;
 
-            timeEntryNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+        //     timeEntryNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
 
-            if (timeEntryNumber != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        //     if (timeEntryNumber != -1)
+        //     {
+        //         break;
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+        //     }
+        // }
+
+        int minOption = 1;
+        int maxOption = timeEntries.Count;
+
+        int timeEntryNumber = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         int timeEntryIndex = timeEntryNumber - 1;
 
@@ -277,26 +249,30 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select option:");
 
-        int choice = -1;
+        // int choice = -1;
 
-        while (true)
-        {
-            string readInput = Console.ReadLine();
+        // while (true)
+        // {
+        //     string readInput = Console.ReadLine();
 
-            int minOption = 0;
-            int maxOption = 4;
+        //     int minOption = 0;
+        //     int maxOption = 4;
 
-            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+        //     choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
 
-            if (choice != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        //     if (choice != -1)
+        //     {
+        //         break;
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+        //     }
+        // }
+
+        minOption = 0;
+        maxOption = 4;
+        int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         bool validDateTime;
 
@@ -307,22 +283,25 @@ public static class TimeEntryMenu
                 Console.WriteLine();
                 Console.WriteLine("New description:");
 
-                string newDescription;
-                bool validInput;
-                int maxLengthDescription = 75;
+                //string newDescription;
+                //bool validInput;
+                //int maxLengthDescription = 75;
 
-                do
-                {
-                    string readInput = Console.ReadLine();
+                // do
+                // {
+                //     string readInput = Console.ReadLine();
                     
-                    validInput = StringValidator.GetValidString(readInput, out newDescription, maxLengthDescription);
+                //     validInput = StringValidator.GetValidString(readInput, out newDescription, maxLengthDescription);
                     
-                    if (!validInput)
-                    {
-                        Console.WriteLine($"Invalid input. Value cannot be empty and must be {maxLengthDescription} characters or less.");
-                    }
+                //     if (!validInput)
+                //     {
+                //         Console.WriteLine($"Invalid input. Value cannot be empty and must be {maxLengthDescription} characters or less.");
+                //     }
 
-                } while (!validInput);
+                // } while (!validInput);
+
+                string newDescription = ConsoleInputService.PromptUntilValid<string>
+                    (StringValidator.GetValidString, "Invalid input. Value cannot be empty and must be 45 characters or less.");
 
                 timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
                 break;
@@ -333,28 +312,30 @@ public static class TimeEntryMenu
                 Console.WriteLine("New start date & time:");
 
                 DateTime endTime = timeEntries[timeEntryIndex].EndTime;
-                DateTime newStartTime;
+                //DateTime newStartTime;
                 
-                do
-                {
-                    string readInput = Console.ReadLine();
+                // do
+                // {
+                //     string readInput = Console.ReadLine();
 
-                    validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newStartTime);
+                //     validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newStartTime);
 
-                    if (validDateTime)
-                    {
-                        validDateTime = timeEntryService.ValidateStartTime(newStartTime, endTime);
+                //     if (validDateTime)
+                //     {
+                //         validDateTime = timeEntryService.ValidateStartTime(newStartTime, endTime);
 
-                        if (!validDateTime)
-                        {
-                            Console.WriteLine("Invalid date. Make sure start time is earlier then end time and duration is not longer then 24 hours.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
-                    }
-                } while (!validDateTime);
+                //         if (!validDateTime)
+                //         {
+                //             Console.WriteLine("Invalid date. Make sure start time is earlier then end time and duration is not longer then 24 hours.");
+                //         }
+                //     }
+                //     else
+                //     {
+                //         Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+                //     }
+                // } while (!validDateTime);
+
+                DateTime newStartTime = ConsoleInputService.PromptValidStartTime(endTime);
 
                 timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
@@ -365,29 +346,31 @@ public static class TimeEntryMenu
                 Console.WriteLine("New end date & time:");
 
                 DateTime startTime = timeEntries[timeEntryIndex].StartTime;
-                DateTime newEndTime;
+                // DateTime newEndTime;
                 
-                do
-                {
-                    string readInput = Console.ReadLine();
+                // do
+                // {
+                //     string readInput = Console.ReadLine();
 
-                    validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newEndTime);
+                //     validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newEndTime);
 
-                    if (validDateTime)
-                    {
-                        validDateTime = timeEntryService.ValidateEndTime(startTime, newEndTime);
+                //     if (validDateTime)
+                //     {
+                //         validDateTime = timeEntryService.ValidateEndTime(startTime, newEndTime);
 
-                        if (!validDateTime)
-                        {
-                            Console.WriteLine("Invalid date. Make sure end time is later then start time and not longer then 24 hours.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
-                    }
+                //         if (!validDateTime)
+                //         {
+                //             Console.WriteLine("Invalid date. Make sure end time is later then start time and not longer then 24 hours.");
+                //         }
+                //     }
+                //     else
+                //     {
+                //         Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+                //     }
                     
-                } while (!validDateTime);
+                // } while (!validDateTime);
+
+                DateTime newEndTime = ConsoleInputService.PromptValidEndTime(startTime);
 
                 timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
                 Console.WriteLine("End time is succesfully updated!");
@@ -410,27 +393,32 @@ public static class TimeEntryMenu
 
                 Console.WriteLine("New Project:");
                 
-                int projectNumber;
+                // int projectNumber;
 
-                // Validate user input
-                while (true)
-                {
-                    string readInput = Console.ReadLine();
+                // // Validate user input
+                // while (true)
+                // {
+                //     string readInput = Console.ReadLine();
 
-                    int minOption = 1;
-                    int maxOption = projects.Count;
+                //     int minOption = 1;
+                //     int maxOption = projects.Count;
 
-                    projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+                //     projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
 
-                    if (projectNumber != -1)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-                    }
-                }
+                //     if (projectNumber != -1)
+                //     {
+                //         break;
+                //     }
+                //     else
+                //     {
+                //         Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+                //     }
+                // }
+
+                minOption = 1;
+                maxOption = projects.Count;
+
+                int projectNumber = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
                 int projectId = projectNumber - 1; // -1 because zero based index
 
@@ -470,26 +458,31 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Select a time entry number");
 
-        int timeEntryNumber;
+        //int timeEntryNumber;
 
-        while (true)
-        {
-            string readInput = Console.ReadLine();
+        // while (true)
+        // {
+        //     string readInput = Console.ReadLine();
 
-            int minOption = 1;
-            int maxOption = timeEntries.Count;
+        //     int minOption = 1;
+        //     int maxOption = timeEntries.Count;
 
-            timeEntryNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
+        //     timeEntryNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
 
-            if (timeEntryNumber != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        //     if (timeEntryNumber != -1)
+        //     {
+        //         break;
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
+        //     }
+        // }
+
+        int minOption = 1;
+        int maxOption = timeEntries.Count;
+
+        int timeEntryNumber = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         for(int i = 0; i < timeEntries.Count; i++)
         {
@@ -503,21 +496,24 @@ public static class TimeEntryMenu
                 Console.WriteLine();
                 Console.WriteLine("(Y/N):");
 
-                string choice;
-                bool validInput;
+                // string choice;
+                // bool validInput;
 
-                do
-                {
-                    string readInput = Console.ReadLine();
+                // do
+                // {
+                //     string readInput = Console.ReadLine();
                     
-                    validInput = StringValidator.GetValidString(readInput, out choice);
+                //     validInput = StringValidator.GetValidString(readInput, out choice);
                     
-                    if (!validInput)
-                    {
-                        Console.WriteLine("Invalid input.");
-                    }
+                //     if (!validInput)
+                //     {
+                //         Console.WriteLine("Invalid input.");
+                //     }
 
-                } while (!validInput);
+                // } while (!validInput);
+
+                string choice = ConsoleInputService.PromptUntilValid<string>
+                    (StringValidator.GetValidString, "Invalid input.");
 
                 Console.WriteLine();
 

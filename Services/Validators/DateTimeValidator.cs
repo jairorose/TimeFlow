@@ -4,7 +4,7 @@ using System.Globalization;
 
 public static class DateTimeValidator
 {
-    public static bool GetValidDateTime(string userInput, out DateTime date)
+    public static bool GetValidDateTime(string? userInput, out DateTime date)
     {
         date = DateTime.MinValue;
 
@@ -18,7 +18,7 @@ public static class DateTimeValidator
         return validation;
     }
 
-    public static bool GetValidDate(string userInput, out DateTime date)
+    public static bool GetValidDate(string? userInput, out DateTime date)
     {
         date = DateTime.MinValue;
 
@@ -32,7 +32,7 @@ public static class DateTimeValidator
         return validation;
     }
 
-    public static bool GetValidMonth(string userInput, out DateTime date)
+    public static bool GetValidMonth(string? userInput, out DateTime date)
     {
         date = DateTime.MinValue;
 
@@ -46,7 +46,7 @@ public static class DateTimeValidator
         return validation;
     }
 
-    public static bool GetValidYear(string userInput, out DateTime date)
+    public static bool GetValidYear(string? userInput, out DateTime date)
     {
         date = DateTime.MinValue;
 
