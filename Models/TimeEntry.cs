@@ -1,4 +1,4 @@
-namespace TimeManagementSystem.Models;
+namespace TimeFlow.Models;
 
 public class TimeEntry
 {

@@ -1,8 +1,8 @@
-namespace TimeManagementSystem.Menus;
+namespace TimeFlow.Menus;
 
-using TimeManagementSystem.Models;
-using TimeManagementSystem.Services;
-using TimeManagementSystem.Services.Validators;
+using TimeFlow.Models;
+using TimeFlow.Services;
+using TimeFlow.Services.Validators;
 
 public static class TimeEntryMenu
 {

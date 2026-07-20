@@ -1,8 +1,8 @@
-namespace TimeManagementSystem.Services;
+namespace TimeFlow.Services;
 
 using System.Data.Common;
-using TimeManagementSystem.Data;
-using TimeManagementSystem.Models;
+using TimeFlow.Data;
+using TimeFlow.Models;
 public class ProjectService
 {
     public List<Project> GetAll()

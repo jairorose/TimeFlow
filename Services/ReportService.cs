@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
-using TimeManagementSystem.Data;
-using TimeManagementSystem.Models;
+using TimeFlow.Data;
+using TimeFlow.Models;
 
-namespace TimeManagementSystem.Services;
+namespace TimeFlow.Services;
 
 public class ReportService
 {

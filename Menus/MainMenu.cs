@@ -1,7 +1,7 @@
-using TimeManagementSystem.Services;
-using TimeManagementSystem.Services.Validators;
+using TimeFlow.Services;
+using TimeFlow.Services.Validators;
 
-namespace TimeManagementSystem.Menus;
+namespace TimeFlow.Menus;
 
 public static class MainMenu
 {

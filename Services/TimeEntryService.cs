@@ -1,8 +1,8 @@
-namespace TimeManagementSystem.Services;
+namespace TimeFlow.Services;
 
 using Microsoft.EntityFrameworkCore;
-using TimeManagementSystem.Models;
-using TimeManagementSystem.Data;
+using TimeFlow.Models;
+using TimeFlow.Data;
 
 public class TimeEntryService
 {

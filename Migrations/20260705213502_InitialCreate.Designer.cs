@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TimeManagementSystem.Data;
+using TimeFlow.Data;
 
 #nullable disable
 
-namespace TimeManagementSystem.Migrations
+namespace TimeFlow.Migrations
 {
     [DbContext(typeof(TimeFlowDbContext))]
     [Migration("20260705213502_InitialCreate")]
@@ -20,7 +20,7 @@ namespace TimeManagementSystem.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
 
-            modelBuilder.Entity("TimeManagementSystem.Models.Project", b =>
+            modelBuilder.Entity("TimeFlow.Models.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace TimeManagementSystem.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("TimeManagementSystem.Models.TimeEntry", b =>
+            modelBuilder.Entity("TimeFlow.Models.TimeEntry", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,9 +67,9 @@ namespace TimeManagementSystem.Migrations
                     b.ToTable("TimeEntries");
                 });
 
-            modelBuilder.Entity("TimeManagementSystem.Models.TimeEntry", b =>
+            modelBuilder.Entity("TimeFlow.Models.TimeEntry", b =>
                 {
-                    b.HasOne("TimeManagementSystem.Models.Project", "Project")
+                    b.HasOne("TimeFlow.Models.Project", "Project")
                         .WithMany("TimeEntries")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -78,7 +78,7 @@ namespace TimeManagementSystem.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("TimeManagementSystem.Models.Project", b =>
+            modelBuilder.Entity("TimeFlow.Models.Project", b =>
                 {
                     b.Navigation("TimeEntries");
                 });

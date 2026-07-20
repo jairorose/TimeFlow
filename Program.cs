@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using TimeManagementSystem.Menus;
-using TimeManagementSystem.Services.Validators;
+using TimeFlow.Menus;
+using TimeFlow.Services.Validators;
 
 class Program
 {

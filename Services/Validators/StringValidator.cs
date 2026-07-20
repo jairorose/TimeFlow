@@ -1,4 +1,4 @@
-namespace TimeManagementSystem.Services.Validators;
+namespace TimeFlow.Services.Validators;
 
 public static class StringValidator
 {
