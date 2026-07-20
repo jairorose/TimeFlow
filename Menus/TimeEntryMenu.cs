@@ -81,68 +81,76 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("Add a description:");
         
-        string description;
-        bool validInput;
+        //string description;
+        //bool validInput;
 
-        do
-        {
-            string readInput = Console.ReadLine();
+        // do
+        // {
+        //     string readInput = Console.ReadLine();
             
-            validInput = StringValidator.GetValidString(readInput, out description);
+        //     validInput = StringValidator.GetValidString(readInput, out description);
             
-            if (!validInput)
-            {
-                Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
-            }
+        //     if (!validInput)
+        //     {
+        //         Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
+        //     }
 
-        } while (!validInput);
+        // } while (!validInput);
+
+        string description = ConsoleInputService.PromptUntilValid<string>
+                    (StringValidator.GetValidString, "Invalid input. Value cannot be empty and must be 45 characters or less.");
+
 
         // Get the start time of the time entry
         Console.WriteLine();
         Console.WriteLine("Start Date & Time (dd-MM-yyyy HH:mm):");
 
-        DateTime startTime;
-        DateTime endTime;
-        bool validDateTime;
+        //DateTime startTime;
+        //DateTime endTime;
+        //bool validDateTime;
 
-        do
-        {
-            string readInput = Console.ReadLine();
+        // do
+        // {
+        //     string readInput = Console.ReadLine();
 
-            validDateTime = DateTimeValidator.GetValidDateTime(readInput, out startTime);
+        //     validDateTime = DateTimeValidator.GetValidDateTime(readInput, out startTime);
 
-            if (!validDateTime)
-            {
-                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
-            }
-        } while (!validDateTime);
+        //     if (!validDateTime)
+        //     {
+        //         Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+        //     }
+        // } while (!validDateTime);
+
+        DateTime startTime = ConsoleInputService.PromptValidStartTime();
 
         // Get the end time of the time entry
         Console.WriteLine();
         Console.WriteLine("End Date & Time   (dd-MM-yyyy HH:mm):");
 
-        do
-        {
-            string readInput = Console.ReadLine();
+        // do
+        // {
+        //     string readInput = Console.ReadLine();
 
-            validDateTime = DateTimeValidator.GetValidDateTime(readInput, out endTime);
+        //     validDateTime = DateTimeValidator.GetValidDateTime(readInput, out endTime);
 
-            if (validDateTime)
-            {
-                validDateTime = timeEntryService.ValidateEndTime(startTime, endTime);
+        //     if (validDateTime)
+        //     {
+        //         validDateTime = timeEntryService.ValidateEndTime(startTime, endTime);
 
-                if (!validDateTime)
-                {
-                    Console.WriteLine("Invalid date. Make sure end time is later then start time and not longer then 24 hours.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
-            }
+        //         if (!validDateTime)
+        //         {
+        //             Console.WriteLine("Invalid date. Make sure end time is later then start time and not longer then 24 hours.");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy HH:mm (e.g. 19-07-2026 23:59)");
+        //     }
 
             
-        } while (!validDateTime);
+        // } while (!validDateTime);
+
+        DateTime endTime = ConsoleInputService.PromptValidEndTime(startTime);
 
         timeEntryService.Create(description, startTime, endTime, projectId);
 
@@ -274,7 +282,7 @@ public static class TimeEntryMenu
         maxOption = 4;
         int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
-        bool validDateTime;
+        //bool validDateTime;
 
         switch (choice)
         {
@@ -335,7 +343,7 @@ public static class TimeEntryMenu
                 //     }
                 // } while (!validDateTime);
 
-                DateTime newStartTime = ConsoleInputService.PromptValidStartTime(endTime);
+                DateTime newStartTime = ConsoleInputService.PromptValidStartTimeChange(endTime);
 
                 timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
