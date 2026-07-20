@@ -1,6 +1,6 @@
-namespace TimeManagementSystem.Services;
+namespace TimeFlow.Services;
 
-using TimeManagementSystem.Services.Validators;
+using TimeFlow.Services.Validators;
 
 public static class ConsoleInputService
 {

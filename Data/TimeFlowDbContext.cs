@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TimeManagementSystem.Models;
+using TimeFlow.Models;
 
-namespace TimeManagementSystem.Data;
+namespace TimeFlow.Data;
 
 public class TimeFlowDbContext : DbContext
 {
@@ -10,6 +10,6 @@ public class TimeFlowDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeManagementSystem/timeflow.db");
+        optionsBuilder.UseSqlite("Data Source=/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeFlow/timeflow.db");
     }
 }
