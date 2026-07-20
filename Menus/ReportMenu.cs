@@ -21,26 +21,9 @@ public static class ReportMenu
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
-        int choice= -1;
-
-        while (true)
-        {
-            string readInput = Console.ReadLine();
-
-            int minOption = 0;
-            int maxOption = 4;
-
-            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-            if (choice != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        int minOption = 0;
+        int maxOption = 4;
+        int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         switch (choice)
         {
@@ -72,20 +55,8 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
 
-        DateTime day;
-        bool validDate;
-                
-        do
-        {
-            string readInput = Console.ReadLine();
-
-            validDate = DateTimeValidator.GetValidDate(readInput, out day);
-
-            if (!validDate)
-            {
-                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy (e.g. 19-07-2026)");
-            }
-        } while (!validDate);
+        DateTime day = ConsoleInputService.PromptUntilValid<DateTime>
+            (DateTimeValidator.GetValidDate, "Invalid date format. Please use following format: dd-MM-yyyy (e.g. 19-07-2026)");
 
         Console.WriteLine();
 
@@ -114,21 +85,9 @@ public static class ReportMenu
         Console.WriteLine("========== Weekly Report ==========");
         Console.WriteLine();
         Console.Write("Enter date (dd-mm-yyyy): ");
-        
-        DateTime date;
-        bool validDate;
-                
-        do
-        {
-            string readInput = Console.ReadLine();
 
-            validDate = DateTimeValidator.GetValidDate(readInput, out date);
-
-            if (!validDate)
-            {
-                Console.WriteLine("Invalid date format. Please use following format: dd-MM-yyyy (e.g. 19-07-2026)");
-            }
-        } while (!validDate);
+        DateTime date = ConsoleInputService.PromptUntilValid<DateTime>
+            (DateTimeValidator.GetValidDate, "Invalid date format. Please use following format: dd-MM-yyyy (e.g. 19-07-2026)");
 
         Console.WriteLine();
 
@@ -141,20 +100,7 @@ public static class ReportMenu
 
         var timeEntries = reportService.GetEntriesByWeek(date);
 
-        foreach (var project in timeEntries)
-        {
-            Console.WriteLine();
-            Console.WriteLine(project.Key.Name);
-
-            TimeSpan duration = TimeSpan.Zero;
-
-            foreach (var timeEntry in project.Key.TimeEntries)
-            {
-                duration += timeEntry.EndTime.Subtract(timeEntry.StartTime);
-            }
-
-            Console.WriteLine($"Total time: {duration}");
-        }
+        PrintDurationPerProject(timeEntries);
     }
 
     private static void ShowMonthlyReport()
@@ -164,39 +110,14 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter date (mm-yyyy): ");
 
-        DateTime month;
-        bool validDate;
-                
-        do
-        {
-            string readInput = Console.ReadLine();
-
-            validDate = DateTimeValidator.GetValidMonth(readInput, out month);
-
-            if (!validDate)
-            {
-                Console.WriteLine("Invalid date format. Please use following format: MM-yyyy (e.g. 07-2026)");
-            }
-        } while (!validDate);
+        DateTime month = ConsoleInputService.PromptUntilValid<DateTime>
+            (DateTimeValidator.GetValidMonth, "Invalid date format. Please use following format: MM-yyyy (e.g. 07-2026)");
 
         Console.WriteLine();
 
         var timeEntries = reportService.GetEntriesByMonth(month);
 
-        foreach (var project in timeEntries)
-        {
-            Console.WriteLine();
-            Console.WriteLine(project.Key.Name);
-
-            TimeSpan duration = TimeSpan.Zero;
-
-            foreach (var timeEntry in project.Key.TimeEntries)
-            {
-                duration += timeEntry.EndTime.Subtract(timeEntry.StartTime);
-            }
-
-            Console.WriteLine($"Total time: {duration}");
-        }
+        PrintDurationPerProject(timeEntries);
     }
 
     private static void ShowYearlyReport()
@@ -206,25 +127,18 @@ public static class ReportMenu
         Console.WriteLine();
         Console.Write("Enter year (yyyy): ");
 
-        DateTime year;
-        bool validDate;
-                
-        do
-        {
-            string readInput = Console.ReadLine();
-
-            validDate = DateTimeValidator.GetValidYear(readInput, out year);
-
-            if (!validDate)
-            {
-                Console.WriteLine("Invalid date format. Please use following format: yyyy (e.g. 2026)");
-            }
-        } while (!validDate);
+        DateTime year = ConsoleInputService.PromptUntilValid<DateTime>
+            (DateTimeValidator.GetValidYear, "Invalid date format. Please use following format: yyyy (e.g. 2026)");
 
         Console.WriteLine();
 
         var timeEntries = reportService.GetEntriesByYear(year);
 
+        PrintDurationPerProject(timeEntries);
+    }
+
+    private static void PrintDurationPerProject(List<IGrouping<Project, TimeEntry>> timeEntries)
+    {
         foreach (var project in timeEntries)
         {
             Console.WriteLine();

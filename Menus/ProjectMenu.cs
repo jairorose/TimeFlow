@@ -21,26 +21,9 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
-        int choice= -1;
-
-        while (true)
-        {
-            string readInput = Console.ReadLine();
-
-            int minOption = 0;
-            int maxOption = 4;
-
-            choice = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-            if (choice != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        int minOption = 0;
+        int maxOption = 4;
+        int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         switch (choice)
         {
@@ -71,30 +54,7 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Enter project name:");
 
-        string projectName;
-        bool validInput;
-
-        do
-        {
-            string readInput = Console.ReadLine();
-            
-            validInput = StringValidator.GetValidString(readInput, out projectName);
-            
-            if (validInput)
-            {
-                validInput = projectService.ValidateProjectName(projectName);
-
-                if (!validInput)
-                {
-                    Console.WriteLine("Invalid input. Make sure project name doesn't already exist.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
-            }
-
-        } while (!validInput);
+        string projectName = ConsoleInputService.PromptValidProjectName();
 
         projectService.Create(projectName);
 
@@ -141,26 +101,9 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        int projectNumber;
-
-        while (true)
-        {
-            string readInput = Console.ReadLine();
-
-            int minOption = 1;
-            int maxOption = projects.Count;
-
-            projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-            if (projectNumber != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        int minOption = 1;
+        int maxOption = projects.Count;
+        int projectNumber = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         for (int i = 0; i < projects.Count; i++)
         {
@@ -171,28 +114,7 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("Enter new project name:");
 
-                string projectName;
-                bool validInput;
-
-                do
-                {
-                    string readInput = Console.ReadLine();
-                    
-                    validInput = StringValidator.GetValidString(readInput, out projectName);
-                    
-                    if (!validInput)
-                    {
-                        Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
-                    }
-                    
-                    validInput = projectService.ValidateProjectName(projectName);
-
-                    if (!validInput)
-                    {
-                        Console.WriteLine("Invalid input. Make sure project name doesn't already exist.");
-                    }
-
-                } while (!validInput);
+                string projectName = ConsoleInputService.PromptValidProjectName();
 
                 projectService.Update(projects[i].Id, projectName);
 
@@ -223,26 +145,9 @@ public static class ProjectMenu
         Console.WriteLine();
         Console.WriteLine("Select a project number");
 
-        int projectNumber;
-
-        while (true)
-        {
-            string readInput = Console.ReadLine();
-
-            int minOption = 1;
-            int maxOption = projects.Count;
-
-            projectNumber = MenuValidator.GetValidMenuChoice(readInput, minOption, maxOption);
-
-            if (projectNumber != -1)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine($"Invalid menu option. Please select a number between {minOption} and {maxOption}");
-            }
-        }
+        int minOption = 1;
+        int maxOption = projects.Count;
+        int projectNumber = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         for(int i = 0; i < projects.Count; i++)
         {
@@ -253,21 +158,24 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("(Y/N):");
 
-                string choice;
-                bool validInput;
+                //string choice;
+                //bool validInput;
 
-                do
-                {
-                    string readInput = Console.ReadLine();
+                // do
+                // {
+                //     string readInput = Console.ReadLine();
                     
-                    validInput = StringValidator.GetValidString(readInput, out choice);
+                //     validInput = StringValidator.GetValidString(readInput, out choice);
                     
-                    if (!validInput)
-                    {
-                        Console.WriteLine("Invalid input.");
-                    }
+                //     if (!validInput)
+                //     {
+                //         Console.WriteLine("Invalid input.");
+                //     }
 
-                } while (!validInput);
+                // } while (!validInput);
+
+                string choice = ConsoleInputService.PromptUntilValid<string>
+                    (StringValidator.GetValidString, "Invalid input.");
 
                 Console.WriteLine();
 
