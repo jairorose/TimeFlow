@@ -1,6 +1,5 @@
 namespace TimeFlow.Services;
 
-using System.Data.Common;
 using TimeFlow.Data;
 using TimeFlow.Models;
 public class ProjectService
@@ -31,20 +30,26 @@ public class ProjectService
     {
         using var db = new TimeFlowDbContext();
 
-        Project project = db.Projects.Find(id);
+        Project? project = db.Projects.Find(id);
 
-        project.Name = name;
-        db.SaveChanges();
+        if (project != null)
+        {
+            project.Name = name;
+            db.SaveChanges();
+        }
     }
 
     public void Delete(int id)
     {
         using var db = new TimeFlowDbContext();
 
-        Project project = db.Projects.Find(id);
+        Project? project = db.Projects.Find(id);
 
-        db.Projects.Remove(project);
-        db.SaveChanges();
+        if (project != null)
+        {
+            db.Projects.Remove(project);
+            db.SaveChanges();
+        }
     }
 
     public bool ValidateProjectName(string name)

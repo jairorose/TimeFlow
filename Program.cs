@@ -1,21 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using TimeFlow.Menus;
-using TimeFlow.Services.Validators;
+﻿using TimeFlow.Menus;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // string input = "";
-        // string input2 = "        ";
-        // string input3 = "   Fitness   ";
-        // string input4 = "sjahdiuahsdiahsdhauisdhasdhiahiusdhuaidhuhadijsdhdhsaduasho";
-
-        // Console.WriteLine(StringValidator.GetValidString(input, out string output) + ", (" + output + ")");
-        // Console.WriteLine(StringValidator.GetValidString(input2, out output) + ", (" + output + ")");
-        // Console.WriteLine(StringValidator.GetValidString(input3, out output) + ", (" + output + ")");
-        // Console.WriteLine(StringValidator.GetValidString(input4, out output) + ", (" + output + ")");
         MainMenu.Show();
     }
 }

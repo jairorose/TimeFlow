@@ -40,11 +40,9 @@ public static class ProjectMenu
                 DeleteProject();
                 break;
             case 0:
-                MainMenu.Show();
-                break;
+                return;
             default:
-                // Add exception
-                break;
+                throw new InvalidOperationException("Unexpected menu option.");
         }
     }
 
@@ -158,28 +156,12 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("(Y/N):");
 
-                //string choice;
-                //bool validInput;
-
-                // do
-                // {
-                //     string readInput = Console.ReadLine();
-                    
-                //     validInput = StringValidator.GetValidString(readInput, out choice);
-                    
-                //     if (!validInput)
-                //     {
-                //         Console.WriteLine("Invalid input.");
-                //     }
-
-                // } while (!validInput);
-
                 string choice = ConsoleInputService.PromptUntilValid<string>
                     (StringValidator.GetValidString, "Invalid input.");
 
                 Console.WriteLine();
 
-                if (choice == "Y")
+                if (choice.ToLower() == "y")
                 {
                     projectService.Delete(projects[i].Id);
 
