@@ -17,11 +17,11 @@ public class TimeEntryService
         return timeEntries;
     }
 
-    public TimeEntry GetById(int id)
+    public TimeEntry? GetById(int id)
     {
         using var db = new TimeFlowDbContext();
 
-        TimeEntry timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
         return timeEntry;
     }
@@ -46,50 +46,65 @@ public class TimeEntryService
     {
         using var db = new TimeFlowDbContext();
 
-        TimeEntry timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        timeEntry.Description = description;
-        db.SaveChanges();
+        if (timeEntry != null)
+        {
+            timeEntry.Description = description;
+            db.SaveChanges();
+        }
     }
 
     public void UpdateStartTime(int id, DateTime startTime)
     {
         using var db = new TimeFlowDbContext();
 
-        TimeEntry timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        timeEntry.StartTime = startTime;
-        db.SaveChanges();
+        if (timeEntry != null)
+        {
+            timeEntry.StartTime = startTime;
+            db.SaveChanges();
+        }
     }
 
     public void UpdateEndTime(int id, DateTime endTime)
     {
         using var db = new TimeFlowDbContext();
 
-        TimeEntry timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        timeEntry.EndTime = endTime;
-        db.SaveChanges();
+        if (timeEntry != null)
+        {
+            timeEntry.EndTime = endTime;
+            db.SaveChanges();
+        }
     }
 
     public void UpdateProject(int id, int projectId)
     {
         using var db = new TimeFlowDbContext();
 
-        TimeEntry timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        timeEntry.ProjectId = projectId;
-        db.SaveChanges();
+        if (timeEntry != null)
+        {
+            timeEntry.ProjectId = projectId;
+            db.SaveChanges();
+        }
     }
 
     public void DeleteTimeEntry(int id)
     {
         using var db = new TimeFlowDbContext();
 
-        TimeEntry timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        db.TimeEntries.Remove(timeEntry);
-        db.SaveChanges();
+        if (timeEntry != null)
+        {
+            db.TimeEntries.Remove(timeEntry);
+            db.SaveChanges();
+        }
     }
 
     public bool ValidateStartTime(DateTime start, DateTime end)

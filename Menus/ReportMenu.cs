@@ -43,8 +43,7 @@ public static class ReportMenu
                 MainMenu.Show();
                 break;
             default:
-                //
-                break;
+                throw new InvalidOperationException("Unexpected menu option.");
         }
     }
 

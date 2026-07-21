@@ -36,7 +36,7 @@ public static class ConsoleInputService
 
         do
         {
-            string readInput = Console.ReadLine();
+            string? readInput = Console.ReadLine();
             
             validInput = StringValidator.GetValidString(readInput, out projectName);
             
@@ -83,24 +83,13 @@ public static class ConsoleInputService
 
         while (true)
         {
-            //TimeEntryService timeEntryService = new TimeEntryService();
-
             string? readInput = Console.ReadLine();
 
             bool validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newStartTime);
 
             if (validDateTime)
             {
-                // validDateTime = timeEntryService.ValidateStartTime(newStartTime, currentEndTime);
-
-                // if (!validDateTime)
-                // {
-                //     Console.WriteLine("Invalid date. Make sure start time is earlier then end time and duration is not longer then 24 hours.");
-                // }
-                // else
-                // {
-                    return newStartTime;
-                //}
+                return newStartTime;
             }
             else
             {

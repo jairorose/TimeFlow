@@ -45,7 +45,7 @@ public static class MainMenu
                     //Exit();
                     break;
                 default:
-                    throw new InvalidOperationException("Unexpected menu option"); 
+                    throw new InvalidOperationException("Unexpected menu option."); 
             }
 
             Console.WriteLine();

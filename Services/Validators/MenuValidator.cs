@@ -2,7 +2,7 @@ namespace TimeFlow.Services.Validators;
 
 public static class MenuValidator
 {
-    public static int GetValidMenuChoice(string userInput, int min, int max)
+    public static int GetValidMenuChoice(string? userInput, int min, int max)
     {
         int menuOption = -1;
 
