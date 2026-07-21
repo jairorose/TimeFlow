@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using TimeFlow.Menus;
-using TimeFlow.Services.Validators;
+﻿using TimeFlow.Menus;
 
 class Program
 {
