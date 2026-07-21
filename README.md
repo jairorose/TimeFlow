@@ -65,7 +65,7 @@ Generate reports for
 
 ### Reports
 
-![Reports](Screenshots/montly_report.png)
+![Reports](Screenshots/monthly_report.png)
 
 ## Techologies
 
