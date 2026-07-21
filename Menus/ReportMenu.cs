@@ -40,8 +40,7 @@ public static class ReportMenu
                 ShowYearlyReport();
                 break;
             case 0:
-                MainMenu.Show();
-                break;
+                return;
             default:
                 throw new InvalidOperationException("Unexpected menu option.");
         }

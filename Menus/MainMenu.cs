@@ -6,7 +6,7 @@ namespace TimeFlow.Menus;
 
 public static class MainMenu
 {
-    public static void Show()
+    public static bool Show()
     {
         using var db = new TimeFlowDbContext();
         db.Database.Migrate();
@@ -46,8 +46,7 @@ public static class MainMenu
                     ReportMenu.Show();
                     break;
                 case 0:
-                    //Exit();
-                    break;
+                    return true;
                 default:
                     throw new InvalidOperationException("Unexpected menu option."); 
             }

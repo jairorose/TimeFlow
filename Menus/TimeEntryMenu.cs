@@ -42,8 +42,7 @@ public static class TimeEntryMenu
                 DeleteTimeEntry();
                 break;
             case 0:
-                MainMenu.Show();
-                break;
+                return;
             default:
                 throw new InvalidOperationException("Unexpected menu option");
         }

@@ -40,8 +40,9 @@ public static class ProjectMenu
                 DeleteProject();
                 break;
             case 0:
-                MainMenu.Show();
-                break;
+                // MainMenu.Show();
+                // break;
+                return;
             default:
                 throw new InvalidOperationException("Unexpected menu option.");
         }
