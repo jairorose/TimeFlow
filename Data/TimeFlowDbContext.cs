@@ -10,6 +10,13 @@ public class TimeFlowDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeFlow/timeflow.db");
+        var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var dbFolder = Path.Combine(folder, "TimeFlow");
+
+        Directory.CreateDirectory(dbFolder);
+
+        var path = Path.Combine(dbFolder, "TimeFlow.db");
+
+        optionsBuilder.UseSqlite($"Data Source={path}");
     }
 }

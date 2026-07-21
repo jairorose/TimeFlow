@@ -1,5 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using TimeFlow.Data;
 using TimeFlow.Services;
-using TimeFlow.Services.Validators;
 
 namespace TimeFlow.Menus;
 
@@ -7,6 +8,9 @@ public static class MainMenu
 {
     public static void Show()
     {
+        using var db = new TimeFlowDbContext();
+        db.Database.Migrate();
+
         do
         {
             Console.WriteLine("");
