@@ -57,15 +57,15 @@ Generate reports for
 
 ### Main Menu
 
-![Main Menu](screenshots/main-menu.png)
+![Main Menu](Screenshots/main_menu.png)
 
 ### Project Overview
 
-![Projects](screenshots/projects.png)
+![Projects](Screenshots/project_overview.png)
 
 ### Reports
 
-![Reports](screenshots/report.png)
+![Reports](Screenshots/montly_report.png)
 
 ## Techologies
 
