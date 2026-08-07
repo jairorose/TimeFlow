@@ -4,6 +4,15 @@ using TimeFlow.Services.Validators;
 
 namespace TimeFlow.Menus;
 
+public enum ReportMenuOption
+{
+    Back,
+    DailyReport,
+    WeeklyReport,
+    MonthlyReport,
+    YearlyReport
+}
+
 public static class ReportMenu
 {
     private static readonly ReportService reportService = new ReportService();
@@ -12,34 +21,34 @@ public static class ReportMenu
     {
         Console.WriteLine("========== Reports ==========");
         Console.WriteLine();
-        Console.WriteLine("1. Daily Report");
-        Console.WriteLine("2. Weekly Report");
-        Console.WriteLine("3. Monthly Report");
-        Console.WriteLine("4. Yearly Report");
+        Console.WriteLine($"{(int)ReportMenuOption.DailyReport}. Daily Report");
+        Console.WriteLine($"{(int)ReportMenuOption.WeeklyReport}. Weekly Report");
+        Console.WriteLine($"{(int)ReportMenuOption.MonthlyReport}. Monthly Report");
+        Console.WriteLine($"{(int)ReportMenuOption.YearlyReport}. Yearly Report");
         Console.WriteLine();
-        Console.WriteLine("0. Back to Main Menu");
+        Console.WriteLine($"{(int)ReportMenuOption.Back}. Back to Main Menu");
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
         int minOption = 0;
-        int maxOption = 4;
+        int maxOption = (int)Enum.GetValues<ReportMenuOption>().Last();
         int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
-        switch (choice)
+        switch ((ReportMenuOption)choice)
         {
-            case 1:
+            case ReportMenuOption.DailyReport:
                 ShowDailyReport();
                 break;
-            case 2:
+            case ReportMenuOption.WeeklyReport:
                 ShowWeeklyReport();
                 break;
-            case 3:
+            case ReportMenuOption.MonthlyReport:
                 ShowMonthlyReport();
                 break;
-            case 4:
+            case ReportMenuOption.YearlyReport:
                 ShowYearlyReport();
                 break;
-            case 0:
+            case ReportMenuOption.Back:
                 return;
             default:
                 throw new InvalidOperationException("Unexpected menu option.");
