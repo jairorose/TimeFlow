@@ -4,6 +4,14 @@ using TimeFlow.Services;
 
 namespace TimeFlow.Menus;
 
+public enum MainMenuOption
+{
+    Exit,
+    Projects,
+    TimeEntries,
+    Reports
+}
+
 public static class MainMenu
 {
     public static void Show()
@@ -22,11 +30,11 @@ public static class MainMenu
             Console.WriteLine("Track your time. Own your workflow.");
             Console.WriteLine("");
 
-            Console.WriteLine("1. Projects");
-            Console.WriteLine("2. Time Entries");
-            Console.WriteLine("3. Reports");
+            Console.WriteLine($"{(int)MainMenuOption.Projects}. Projects");
+            Console.WriteLine($"{(int)MainMenuOption.TimeEntries}. Time Entries");
+            Console.WriteLine($"{(int)MainMenuOption.Reports}. Reports");
             Console.WriteLine();
-            Console.WriteLine("0. Exit");
+            Console.WriteLine($"{(int)MainMenuOption.Exit}. Exit");
             Console.WriteLine("");
             Console.WriteLine("Select an option:");
 
@@ -34,18 +42,18 @@ public static class MainMenu
             int maxOption = 3;
             int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
-            switch (choice)
+            switch ((MainMenuOption)choice)
             {
-                case 1:
+                case MainMenuOption.Projects:
                     ProjectMenu.Show();
                     break;
-                case 2:
+                case MainMenuOption.TimeEntries:
                     TimeEntryMenu.Show();
                     break;
-                case 3:
+                case MainMenuOption.Reports:
                     ReportMenu.Show();
                     break;
-                case 0:
+                case MainMenuOption.Exit:
                     return;
                 default:
                     throw new InvalidOperationException("Unexpected menu option."); 
