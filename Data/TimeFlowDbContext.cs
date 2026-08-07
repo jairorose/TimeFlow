@@ -19,4 +19,13 @@ public class TimeFlowDbContext : DbContext
 
         optionsBuilder.UseSqlite($"Data Source={path}");
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<TimeEntry>()
+            .HasOne(entry => entry.Project)
+            .WithMany(project => project.TimeEntries)
+            .HasForeignKey(entry => entry.ProjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
 }
