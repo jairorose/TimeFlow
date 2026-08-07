@@ -39,7 +39,7 @@ public static class MainMenu
             Console.WriteLine("Select an option:");
 
             int minOption = 0;
-            int maxOption = 3;
+            int maxOption = (int)Enum.GetValues<MainMenuOption>().Last();
             int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
             switch ((MainMenuOption)choice)
