@@ -2,6 +2,7 @@ namespace TimeFlow.Menus;
 
 using TimeFlow.Models;
 using TimeFlow.Services;
+using TimeFlow.Services.Results;
 using TimeFlow.Services.Validators;
 
 public static class TimeEntryMenu
@@ -184,6 +185,8 @@ public static class TimeEntryMenu
 
         //bool validDateTime;
 
+        OperationResult result = null;
+
         switch (choice)
         {
             case 1:
@@ -194,7 +197,7 @@ public static class TimeEntryMenu
                 string newDescription = ConsoleInputService.PromptUntilValid<string>
                     (StringValidator.GetValidString, "Invalid input. Value cannot be empty and must be 45 characters or less.");
 
-                timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
+                result = timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
                 break;
             case 2:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
@@ -205,7 +208,7 @@ public static class TimeEntryMenu
                 DateTime endTime = timeEntries[timeEntryIndex].EndTime;
                 DateTime newStartTime = ConsoleInputService.PromptValidStartTimeChange(endTime);
 
-                timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
+                result = timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
             case 3:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
@@ -217,7 +220,6 @@ public static class TimeEntryMenu
                 DateTime newEndTime = ConsoleInputService.PromptValidEndTime(startTime);
 
                 timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
-                Console.WriteLine("End time is succesfully updated!");
                 break;
             case 4:
                 Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");
@@ -244,12 +246,30 @@ public static class TimeEntryMenu
 
                 int projectId = projectNumber - 1; // -1 because zero based index
 
-                timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
+                result = timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
                 break;
             case 0:
                 break;
             default:
                 throw new InvalidOperationException("Unexpected menu option.");
+        }
+
+        Console.WriteLine();
+
+        if (result != null)
+        {
+            if (result.Succeeded)
+            {
+                Console.WriteLine("Time Entry updated successfully!");
+            }
+            else
+            {
+                Console.WriteLine($"Time entry is not able to update: {result.Error}");
+            }
+        }    
+        else
+        {
+            Console.WriteLine("Time Entry not updated.");
         }
     }
 
@@ -304,9 +324,16 @@ public static class TimeEntryMenu
 
                 if (choice.ToLower() == "y")
                 {
-                    timeEntryService.DeleteTimeEntry(timeEntries[i].Id);
+                    var result = timeEntryService.DeleteTimeEntry(timeEntries[i].Id);
 
-                    Console.WriteLine("Time Entry deleted successfully!");
+                    if (result.Succeeded)
+                    {
+                        Console.WriteLine("Time Entry deleted successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Time Entry deletion failed: {result.Error}");
+                    }
                 }
                 else
                 {

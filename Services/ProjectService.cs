@@ -2,6 +2,8 @@ namespace TimeFlow.Services;
 
 using TimeFlow.Data;
 using TimeFlow.Models;
+using TimeFlow.Services.Results;
+
 public class ProjectService
 {
     public List<Project> GetAll()
@@ -26,30 +28,43 @@ public class ProjectService
         db.SaveChanges();
     }
 
-    public void Update(int id, string name)
+    public OperationResult Update(int id, string name)
     {
         using var db = new TimeFlowDbContext();
 
         Project? project = db.Projects.Find(id);
 
-        if (project != null)
+        if (project == null)
         {
-            project.Name = name;
-            db.SaveChanges();
+            return OperationResult.Failure($"Project with id {id} not found.");
         }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return OperationResult.Failure("Project name cannot be empty.");
+        }
+
+        project.Name = name;
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
-    public void Delete(int id)
+    public OperationResult Delete(int id)
     {
         using var db = new TimeFlowDbContext();
 
         Project? project = db.Projects.Find(id);
 
-        if (project != null)
+        if (project == null)
         {
-            db.Projects.Remove(project);
-            db.SaveChanges();
+            return OperationResult.Failure($"Project with id {id} not found.");
         }
+
+        db.Projects.Remove(project);
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
     public bool ValidateProjectName(string name)
