@@ -53,9 +53,18 @@ public static class TimeEntryMenu
         Console.WriteLine("========== Create Time Entry ==========");
         Console.WriteLine();
         Console.WriteLine("Available Projects:");
+        Console.WriteLine();
 
-        // First show projects to attach the time entry to
+        // First show projects to link to the time entry
         List<Project> projects = projectService.GetAll();
+
+        // If there are no projects show a helpfull message to the user
+        if (projects.Count == 0)
+        {
+            Console.WriteLine("Make sure to create a project first to link to the time entry.");
+            return;
+        }
+
         int projectCounter = 0;
 
         foreach (Project project in projects)
@@ -132,6 +141,14 @@ public static class TimeEntryMenu
         Console.WriteLine();
 
         List<TimeEntry> timeEntries = timeEntryService.GetAll();
+
+        // First check if there are time entries available to edit otherwise return to menu
+        if (timeEntries.Count == 0)
+        {
+            Console.WriteLine("No time entries are available.");
+            Console.WriteLine("Create a time entry before editing.");
+            return;
+        }
 
         int timeEntryCounter = 0;
 
@@ -263,6 +280,13 @@ public static class TimeEntryMenu
         int timeEntryCounter = 1;
 
         List<TimeEntry> timeEntries = timeEntryService.GetAll();
+
+        // First check if there are projects available to delete otherwise return to menu
+        if (timeEntries.Count == 0)
+        {
+            Console.WriteLine("No time entries are available to delete.");
+            return;
+        }
 
         foreach (TimeEntry timeEntry in timeEntries)
         {
