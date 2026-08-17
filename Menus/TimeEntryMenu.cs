@@ -203,6 +203,8 @@ public static class TimeEntryMenu
 
         //bool validDateTime;
 
+        OperationResult result = null;
+
         switch ((TimeEntryEditOption)choice)
         {
             case TimeEntryEditOption.Description:
