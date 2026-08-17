@@ -4,6 +4,15 @@ using TimeFlow.Models;
 using TimeFlow.Services;
 using TimeFlow.Services.Validators;
 
+public enum ProjectMenuOption
+{
+    Back,
+    CreateProject,
+    ViewAllProjects,
+    EditProject,
+    DeleteProject
+}
+
 public static class ProjectMenu
 {
 
@@ -12,34 +21,34 @@ public static class ProjectMenu
     {
         Console.WriteLine("========== Projects ==========");
         Console.WriteLine();
-        Console.WriteLine("1. Create Project");
-        Console.WriteLine("2. View All Projects");
-        Console.WriteLine("3. Edit Project");
-        Console.WriteLine("4. Delete Project");
+        Console.WriteLine($"{(int)ProjectMenuOption.CreateProject}. Create Project");
+        Console.WriteLine($"{(int)ProjectMenuOption.ViewAllProjects}. View All Projects");
+        Console.WriteLine($"{(int)ProjectMenuOption.EditProject}. Edit Project");
+        Console.WriteLine($"{(int)ProjectMenuOption.DeleteProject}. Delete Project");
         Console.WriteLine();
-        Console.WriteLine("0. Back to Main Menu");
+        Console.WriteLine($"{(int)ProjectMenuOption.Back}. Back to Main Menu");
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
         int minOption = 0;
-        int maxOption = 4;
+        int maxOption = (int)Enum.GetValues<ProjectMenuOption>().Last(); // Get last value of enum
         int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
-        switch (choice)
+        switch ((ProjectMenuOption)choice)
         {
-            case 1:
+            case ProjectMenuOption.CreateProject:
                 CreateProject();
                 break;
-            case 2:
+            case ProjectMenuOption.ViewAllProjects:
                 ShowProjects();
                 break;
-            case 3:
+            case ProjectMenuOption.EditProject:
                 EditProject();
                 break;
-            case 4:
+            case ProjectMenuOption.DeleteProject:
                 DeleteProject();
                 break;
-            case 0:
+            case ProjectMenuOption.Back:
                 return;
             default:
                 throw new InvalidOperationException("Unexpected menu option.");
