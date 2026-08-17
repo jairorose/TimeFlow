@@ -2,6 +2,14 @@ namespace TimeFlow.Services;
 
 using TimeFlow.Data;
 using TimeFlow.Models;
+
+public enum ProjectDeletionResult
+{
+    Deleted,
+    NotFound,
+    HasTimeEntries
+}
+
 public class ProjectService
 {
     public List<Project> GetAll()
@@ -39,17 +47,26 @@ public class ProjectService
         }
     }
 
-    public void Delete(int id)
+    public ProjectDeletionResult Delete(int id)
     {
         using var db = new TimeFlowDbContext();
 
         Project? project = db.Projects.Find(id);
 
-        if (project != null)
+        if (project is null)
         {
-            db.Projects.Remove(project);
-            db.SaveChanges();
+            return ProjectDeletionResult.NotFound;
         }
+
+        if (db.TimeEntries.Any(entry => entry.ProjectId == id))
+        {
+            return ProjectDeletionResult.HasTimeEntries;
+        }
+
+        db.Projects.Remove(project);
+        db.SaveChanges();
+
+        return ProjectDeletionResult.Deleted;
     }
 
     public bool ValidateProjectName(string name)

@@ -172,9 +172,20 @@ public static class ProjectMenu
 
                 if (choice.ToLower() == "y")
                 {
-                    projectService.Delete(projects[i].Id);
+                    var result = projectService.Delete(projects[i].Id);
 
-                    Console.WriteLine("Project deleted successfully!");
+                    switch (result)
+                    {
+                        case ProjectDeletionResult.Deleted:
+                            Console.WriteLine("Project deleted successfully!");
+                            break;
+                        case ProjectDeletionResult.NotFound:
+                            Console.WriteLine("Project not found.");
+                            break;
+                        case ProjectDeletionResult.HasTimeEntries:
+                            Console.WriteLine("Deletion not possible. Project still has time entries.");
+                            break;
+                    }
                 }
                 else
                 {
