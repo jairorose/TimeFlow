@@ -5,6 +5,24 @@ using TimeFlow.Services;
 using TimeFlow.Services.Results;
 using TimeFlow.Services.Validators;
 
+public enum TimeEntryMenuOption
+{
+    Back,
+    AddTimeEntry,
+    ViewTimeEntries,
+    EditTimeEntry,
+    DeleteTimeEntry
+}
+
+public enum TimeEntryEditOption
+{
+    Back,
+    Description,
+    StartTime,
+    EndTime,
+    Project
+}
+
 public static class TimeEntryMenu
 {
     private static readonly ProjectService projectService = new ProjectService();
@@ -14,35 +32,35 @@ public static class TimeEntryMenu
     {
         Console.WriteLine("========== Time Entries ==========");
         Console.WriteLine();
-        Console.WriteLine("1. Add Time Entry");
-        Console.WriteLine("2. View Time Entries");
-        Console.WriteLine("3. Edit Time Entry");
-        Console.WriteLine("4. Delete Time Entry");
+        Console.WriteLine($"{(int)TimeEntryMenuOption.AddTimeEntry}. Add Time Entry");
+        Console.WriteLine($"{(int)TimeEntryMenuOption.ViewTimeEntries}. View Time Entries");
+        Console.WriteLine($"{(int)TimeEntryMenuOption.EditTimeEntry}. Edit Time Entry");
+        Console.WriteLine($"{(int)TimeEntryMenuOption.DeleteTimeEntry}. Delete Time Entry");
         Console.WriteLine();
-        Console.WriteLine("0. Back to Main Menu");
+        Console.WriteLine($"{(int)TimeEntryMenuOption.Back}. Back to Main Menu");
         Console.WriteLine();
         Console.WriteLine("Select an option:");
 
         int minOption = 0;
-        int maxOption = 4;
+        int maxOption = (int)Enum.GetValues<TimeEntryMenuOption>().Last();
 
         int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
-        switch (choice)
+        switch ((TimeEntryMenuOption)choice)
         {
-            case 1:
+            case TimeEntryMenuOption.AddTimeEntry:
                 CreateTimeEntry();
                 break;
-            case 2:
+            case TimeEntryMenuOption.ViewTimeEntries:
                 ShowTimeEntries();
                 break;
-            case 3:
+            case TimeEntryMenuOption.EditTimeEntry:
                 EditTimeEntry();
                 break;
-            case 4:
+            case TimeEntryMenuOption.DeleteTimeEntry:
                 DeleteTimeEntry();
                 break;
-            case 0:
+            case TimeEntryMenuOption.Back:
                 return;
             default:
                 throw new InvalidOperationException("Unexpected menu option");
@@ -170,26 +188,24 @@ public static class TimeEntryMenu
         Console.WriteLine();
         Console.WriteLine("What would you like to update?");
         Console.WriteLine();
-        Console.WriteLine("1. Description");
-        Console.WriteLine("2. Start time");
-        Console.WriteLine("3. End time");
-        Console.WriteLine("4. Project");
+        Console.WriteLine($"{(int)TimeEntryEditOption.Description}. Description");
+        Console.WriteLine($"{(int)TimeEntryEditOption.StartTime}. Start time");
+        Console.WriteLine($"{(int)TimeEntryEditOption.EndTime}. End time");
+        Console.WriteLine($"{(int)TimeEntryEditOption.Project}. Project");
         Console.WriteLine();
-        Console.WriteLine("0. Back");
+        Console.WriteLine($"{(int)TimeEntryEditOption.Back}. Back");
         Console.WriteLine();
         Console.WriteLine("Select option:");
 
         minOption = 0;
-        maxOption = 4;
+        maxOption = (int)Enum.GetValues<TimeEntryEditOption>().Last();
         int choice = ConsoleInputService.PromptMenuChoice(minOption, maxOption);
 
         //bool validDateTime;
 
-        OperationResult result = null;
-
-        switch (choice)
+        switch ((TimeEntryEditOption)choice)
         {
-            case 1:
+            case TimeEntryEditOption.Description:
                 Console.WriteLine($"Current description: {timeEntries[timeEntryIndex].Description}");
                 Console.WriteLine();
                 Console.WriteLine("New description:");
@@ -199,7 +215,7 @@ public static class TimeEntryMenu
 
                 result = timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
                 break;
-            case 2:
+            case TimeEntryEditOption.StartTime:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
                 Console.WriteLine($"Current end date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].EndTime}");
                 Console.WriteLine();
@@ -210,7 +226,7 @@ public static class TimeEntryMenu
 
                 result = timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
-            case 3:
+            case TimeEntryEditOption.EndTime:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
                 Console.WriteLine($"Current end date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].EndTime}");
                 Console.WriteLine();
@@ -221,7 +237,7 @@ public static class TimeEntryMenu
 
                 timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
                 break;
-            case 4:
+            case TimeEntryEditOption.Project:
                 Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");
                 Console.WriteLine();
                 Console.WriteLine("Available Projects: ");
@@ -248,7 +264,7 @@ public static class TimeEntryMenu
 
                 result = timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
                 break;
-            case 0:
+            case TimeEntryEditOption.Back:
                 break;
             default:
                 throw new InvalidOperationException("Unexpected menu option.");
