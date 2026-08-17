@@ -3,6 +3,7 @@ namespace TimeFlow.Services;
 using Microsoft.EntityFrameworkCore;
 using TimeFlow.Models;
 using TimeFlow.Data;
+using TimeFlow.Services.Results;
 
 public class TimeEntryService
 {
@@ -42,69 +43,89 @@ public class TimeEntryService
         db.SaveChanges();
     } 
 
-    public void UpdateDescription(int id, string description)
+    public OperationResult UpdateDescription(int id, string description)
     {
         using var db = new TimeFlowDbContext();
 
         TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        if (timeEntry != null)
+        if (timeEntry == null)
         {
-            timeEntry.Description = description;
-            db.SaveChanges();
+            return OperationResult.Failure($"Time entry with id {id} not found.");
         }
+
+        timeEntry.Description = description;
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
-    public void UpdateStartTime(int id, DateTime startTime)
+    public OperationResult UpdateStartTime(int id, DateTime startTime)
     {
         using var db = new TimeFlowDbContext();
 
         TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        if (timeEntry != null)
+        if (timeEntry == null)
         {
-            timeEntry.StartTime = startTime;
-            db.SaveChanges();
+            return OperationResult.Failure($"Time entry with id {id} not found.");
         }
+
+        timeEntry.StartTime = startTime;
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
-    public void UpdateEndTime(int id, DateTime endTime)
+    public OperationResult UpdateEndTime(int id, DateTime endTime)
     {
         using var db = new TimeFlowDbContext();
 
         TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        if (timeEntry != null)
+        if (timeEntry == null)
         {
-            timeEntry.EndTime = endTime;
-            db.SaveChanges();
+            return OperationResult.Failure($"Time entry with id {id} not found.");
         }
+
+        timeEntry.EndTime = endTime;
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
-    public void UpdateProject(int id, int projectId)
+    public OperationResult UpdateProject(int id, int projectId)
     {
         using var db = new TimeFlowDbContext();
 
         TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        if (timeEntry != null)
+        if (timeEntry == null)
         {
-            timeEntry.ProjectId = projectId;
-            db.SaveChanges();
+            return OperationResult.Failure($"Time entry with id {id} not found.");
         }
+
+        timeEntry.ProjectId = projectId;
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
-    public void DeleteTimeEntry(int id)
+    public OperationResult DeleteTimeEntry(int id)
     {
         using var db = new TimeFlowDbContext();
 
         TimeEntry? timeEntry = db.TimeEntries.Find(id);
 
-        if (timeEntry != null)
+        if (timeEntry == null)
         {
-            db.TimeEntries.Remove(timeEntry);
-            db.SaveChanges();
+            return OperationResult.Failure($"Time entry with id {id} not found.");
         }
+
+        db.TimeEntries.Remove(timeEntry);
+        db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
     public bool ValidateStartTime(DateTime start, DateTime end)

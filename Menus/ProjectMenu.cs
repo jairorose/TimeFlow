@@ -122,11 +122,20 @@ public static class ProjectMenu
                 Console.WriteLine("Enter new project name:");
 
                 string projectName = ConsoleInputService.PromptValidProjectName();
-
-                projectService.Update(projects[i].Id, projectName);
-
+                
                 Console.WriteLine();
-                Console.WriteLine("Project updated successfully!");
+
+                var result = projectService.Update(projects[i].Id, projectName);
+
+                if (result.Succeeded)
+                {
+                    Console.WriteLine("Project updated successfully!");
+                }
+                else
+                {
+                    Console.WriteLine($"Project is not able to update: {result.Error}");
+                }
+
                 Console.WriteLine();
             }
         }
