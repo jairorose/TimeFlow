@@ -99,6 +99,15 @@ public static class ProjectMenu
 
         List<Project> projects = projectService.GetAll();
 
+        // First check if there are projects available to edit otherwise return to menu
+        if (projects.Count == 0)
+        {
+            Console.WriteLine("No projects are available.");
+            Console.WriteLine("Create a project before editing.");
+            return;
+        }
+
+        // Show all the projects to the user
         foreach (Project project in projects)
         {
             Console.WriteLine($"[{projectCounter}] {project.Name}");
@@ -152,6 +161,14 @@ public static class ProjectMenu
 
         List<Project> projects = projectService.GetAll();
 
+        // First check if there are projects available to delete otherwise return to menu
+        if (projects.Count == 0)
+        {
+            Console.WriteLine("No projects are available to delete.");
+            return;
+        }
+
+        // Show all available projects to user
         foreach (Project project in projects)
         {
             Console.WriteLine($"[{projectCounter}] {project.Name}");

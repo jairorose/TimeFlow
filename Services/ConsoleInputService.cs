@@ -18,6 +18,10 @@ public static class ConsoleInputService
             {
                 break;
             }
+            else if (min > max)
+            {
+                throw new ArgumentOutOfRangeException(nameof(max), "Maximum menu option cannot be lower than the minimum.");
+            }
             else
             {
                 Console.WriteLine($"Invalid menu option. Please select a number between {min} and {max}");
