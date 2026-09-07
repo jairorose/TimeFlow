@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TimeFlow.csproj" />
+  <Project Path="TimeFlow.Tests/TimeFlow.Tests.csproj" />
+</Solution>
