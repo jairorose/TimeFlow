@@ -3,6 +3,7 @@ namespace TimeFlow.Menus;
 using TimeFlow.Models;
 using TimeFlow.Services;
 using TimeFlow.Services.Validators;
+using TimeFlow.Services.Results;
 
 public enum ProjectMenuOption
 {
@@ -63,9 +64,17 @@ public static class ProjectMenu
 
         string projectName = ConsoleInputService.PromptValidProjectName();
 
-        projectService.Create(projectName);
+        OperationResult result = projectService.Create(projectName);
 
-        Console.WriteLine($"Project '{projectName}' created successfully!");
+        if (result.Succeeded)
+        {
+            Console.WriteLine($"Project '{projectName}' created successfully!");
+        }
+        else
+        {
+            Console.WriteLine($"Creation failed: {result.Error}");
+        }
+        
         Console.WriteLine();
     }
 
