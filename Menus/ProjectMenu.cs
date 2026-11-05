@@ -139,7 +139,7 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("Enter new project name:");
 
-                string projectName = ConsoleInputService.PromptValidProjectName();
+                string projectName = ConsoleInputService.PromptValidProjectName(projects[i].Id);
                 
                 Console.WriteLine();
 
