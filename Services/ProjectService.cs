@@ -25,11 +25,8 @@ public class ProjectService
     public void Create(string name)
     {
         using var db = new TimeFlowDbContext(); // Make connection to the database
-                
-        var project = new Project
-        {
-            Name = name
-        };
+
+        var project = new Project(name);
 
         db.Projects.Add(project);
         db.SaveChanges();
@@ -51,7 +48,7 @@ public class ProjectService
             return OperationResult.Failure("Project name cannot be empty.");
         }
 
-        project.Name = name;
+        project.Rename(name);
         db.SaveChanges();
 
         return OperationResult.Success();

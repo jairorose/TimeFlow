@@ -1,3 +1,5 @@
+using TimeFlow.Models;
+
 namespace TimeFlow.Services;
 
 using TimeFlow.Services.Validators;
@@ -41,21 +43,28 @@ public static class ConsoleInputService
         do
         {
             string? readInput = Console.ReadLine();
-            
-            validInput = StringValidator.GetValidString(readInput, out projectName);
-            
-            if (validInput)
+
+            projectName = Project.NormalizeName(readInput);
+            string? error = Project.GetNameError(projectName);
+
+            if (error == null)
             {
-                validInput = projectService.ValidateProjectName(projectName);
+                // TODO ValidateProjectName is not a good description
+                validInput = projectService.ValidateProjectName(projectName); 
 
                 if (!validInput)
                 {
                     Console.WriteLine("Invalid input. Make sure project name doesn't already exist.");
                 }
+                else
+                {
+                    validInput = true;
+                }
             }
             else
             {
-                Console.WriteLine("Invalid input. Value cannot be empty and must be 45 characters or less.");
+                validInput = false;
+                Console.WriteLine(error);
             }
 
         } while (!validInput);
