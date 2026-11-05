@@ -22,14 +22,28 @@ public class ProjectService
         return projects;
     }
 
-    public void Create(string name)
+    public OperationResult Create(string name)
     {
+        string normalizedName = Project.NormalizeName(name);
+
+        string? error = Project.GetNameError(normalizedName);
+
+        if (error != null)
+        {
+            return OperationResult.Failure(error);
+        }
+
+        bool validProjectName = ValidateProjectName(normalizedName);
+
+        if (!validProjectName) return OperationResult.Failure("Project name already exists.");
+        
+        Project project = new Project(normalizedName);
+
         using var db = new TimeFlowDbContext(); // Make connection to the database
-
-        var project = new Project(name);
-
         db.Projects.Add(project);
         db.SaveChanges();
+
+        return OperationResult.Success();
     }
 
     public OperationResult Update(int id, string name)
