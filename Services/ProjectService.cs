@@ -26,16 +26,10 @@ public class ProjectService
     {
         string normalizedName = Project.NormalizeName(name);
 
-        string? error = Project.GetNameError(normalizedName);
+        string? error = GetProjectNameError(normalizedName);
 
         if (error != null)
-        {
             return OperationResult.Failure(error);
-        }
-
-        bool validProjectName = ValidateProjectName(normalizedName);
-
-        if (!validProjectName) return OperationResult.Failure("Project name already exists.");
         
         Project project = new Project(normalizedName);
 
@@ -48,21 +42,20 @@ public class ProjectService
 
     public OperationResult Update(int id, string name)
     {
-        using var db = new TimeFlowDbContext();
+        string normalizedName = Project.NormalizeName(name);
+        
+        string? error = GetProjectNameError(normalizedName, id);
 
+        if (error != null)
+            return OperationResult.Failure(error);
+
+        using var db = new TimeFlowDbContext();
         Project? project = db.Projects.Find(id);
 
         if (project == null)
-        {
             return OperationResult.Failure($"Project with id {id} not found.");
-        }
 
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return OperationResult.Failure("Project name cannot be empty.");
-        }
-
-        project.Rename(name);
+        project.Rename(normalizedName);
         db.SaveChanges();
 
         return OperationResult.Success();
@@ -90,18 +83,43 @@ public class ProjectService
         return ProjectDeletionResult.Deleted;
     }
 
-    public bool ValidateProjectName(string name)
+    public bool IsNameAvailable(string name, int? excludeId = null)
     {
-        List<Project> projects = GetAll();
+        using var db = new TimeFlowDbContext();
+        
+        IQueryable<Project> query = db.Projects;
 
-        foreach (Project project in projects)
-        {
-            if (project.Name == name)
-            {
-                return false;
-            }
-        }
+        if (excludeId != null)
+            query = query.Where(p => p.Id != excludeId);
 
-        return true;
+        List<string> existingNames = query.Select(p => p.Name).ToList();
+
+        bool nameExists = existingNames.Any(existing => string.Equals(existing, name, StringComparison.OrdinalIgnoreCase));
+
+        return !nameExists;
+    }
+
+    public string? GetProjectNameError(string name, int? projectId = null)
+    {
+        string normalizedName = Project.NormalizeName(name);
+
+        string? error = Project.GetNameError(normalizedName);
+
+        if (error != null)
+            return error;
+        
+        if (projectId != null && !ProjectExists(projectId.Value))
+            return $"Project with id {projectId} not found.";
+        
+        if (!IsNameAvailable(normalizedName, projectId)) 
+            return "Project name already exists.";
+        
+        return null;
+    }
+
+    private bool ProjectExists(int id)
+    {
+        using var db = new TimeFlowDbContext();
+        return db.Projects.Any(p => p.Id == id);
     }
 }

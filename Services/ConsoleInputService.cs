@@ -33,38 +33,27 @@ public static class ConsoleInputService
         return choice;
     }
 
-    public static string PromptValidProjectName()
+    public static string PromptValidProjectName(int? projectId = null)
     {
         string projectName;
-        bool validInput;
+        bool validInput = false;
 
         ProjectService projectService = new ProjectService();
 
         do
         {
             string? readInput = Console.ReadLine();
-
             projectName = Project.NormalizeName(readInput);
-            string? error = Project.GetNameError(projectName);
 
-            if (error == null)
+            string? error = projectService.GetProjectNameError(projectName, projectId);
+
+            if (error != null)
             {
-                // TODO ValidateProjectName is not a good description
-                validInput = projectService.ValidateProjectName(projectName); 
-
-                if (!validInput)
-                {
-                    Console.WriteLine("Invalid input. Make sure project name doesn't already exist.");
-                }
-                else
-                {
-                    validInput = true;
-                }
+                Console.WriteLine(error);
             }
             else
             {
-                validInput = false;
-                Console.WriteLine(error);
+                validInput = true;
             }
 
         } while (!validInput);
