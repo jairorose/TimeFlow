@@ -10,15 +10,22 @@ public class TimeFlowDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var dbFolder = Path.Combine(folder, "TimeFlow");
+        if (optionsBuilder.IsConfigured) return;
+        
+        //var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        //var dbFolder = Path.Combine(folder, "TimeFlow");
 
-        Directory.CreateDirectory(dbFolder);
+        //Directory.CreateDirectory(dbFolder);
 
-        var path = Path.Combine(dbFolder, "TimeFlow.db");
+        //var path = Path.Combine(dbFolder, "TimeFlowDev.db");
+        var path = "/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeFlow development/TimeFlow/DB/TimeFlowDev.db";
 
         optionsBuilder.UseSqlite($"Data Source={path}");
     }
+
+    public TimeFlowDbContext() { }
+
+    public TimeFlowDbContext(DbContextOptions<TimeFlowDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
