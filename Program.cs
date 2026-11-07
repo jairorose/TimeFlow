@@ -22,6 +22,7 @@ class Program
         // Register the needed dependencies
         builder.Services.AddScoped<ProjectService>();
         builder.Services.AddScoped<ProjectMenu>();
+        builder.Services.AddScoped<TimeEntryService>();
         builder.Services.AddScoped<TimeEntryMenu>();
         builder.Services.AddScoped<MainMenu>();
         

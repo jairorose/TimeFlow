@@ -7,11 +7,16 @@ using TimeFlow.Services.Results;
 
 public class TimeEntryService
 {
+    private readonly TimeFlowDbContext _db;
+
+    public TimeEntryService(TimeFlowDbContext db)
+    {
+        _db = db;
+    }
+    
     public List<TimeEntry> GetAll()
     {
-        using var db = new TimeFlowDbContext();
-
-        List<TimeEntry> timeEntries = db.TimeEntries
+        List<TimeEntry> timeEntries = _db.TimeEntries
             .Include(t => t.Project)
             .ToList();
 
@@ -20,17 +25,13 @@ public class TimeEntryService
 
     public TimeEntry? GetById(int id)
     {
-        using var db = new TimeFlowDbContext();
-
-        TimeEntry? timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = _db.TimeEntries.Find(id);
 
         return timeEntry;
     }
 
     public void Create(string description, DateTime start, DateTime end, int projectId)
     {
-        using var db = new TimeFlowDbContext();
-        
         var timeEntry = new TimeEntry
         {
             Description = description,
@@ -39,15 +40,13 @@ public class TimeEntryService
             ProjectId = projectId
         };
 
-        db.TimeEntries.Add(timeEntry);
-        db.SaveChanges();
+        _db.TimeEntries.Add(timeEntry);
+        _db.SaveChanges();
     } 
 
     public OperationResult UpdateDescription(int id, string description)
     {
-        using var db = new TimeFlowDbContext();
-
-        TimeEntry? timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = _db.TimeEntries.Find(id);
 
         if (timeEntry == null)
         {
@@ -55,16 +54,14 @@ public class TimeEntryService
         }
 
         timeEntry.Description = description;
-        db.SaveChanges();
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }
 
     public OperationResult UpdateStartTime(int id, DateTime startTime)
     {
-        using var db = new TimeFlowDbContext();
-
-        TimeEntry? timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = _db.TimeEntries.Find(id);
 
         if (timeEntry == null)
         {
@@ -72,16 +69,14 @@ public class TimeEntryService
         }
 
         timeEntry.StartTime = startTime;
-        db.SaveChanges();
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }
 
     public OperationResult UpdateEndTime(int id, DateTime endTime)
     {
-        using var db = new TimeFlowDbContext();
-
-        TimeEntry? timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = _db.TimeEntries.Find(id);
 
         if (timeEntry == null)
         {
@@ -89,16 +84,14 @@ public class TimeEntryService
         }
 
         timeEntry.EndTime = endTime;
-        db.SaveChanges();
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }
 
     public OperationResult UpdateProject(int id, int projectId)
     {
-        using var db = new TimeFlowDbContext();
-
-        TimeEntry? timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = _db.TimeEntries.Find(id);
 
         if (timeEntry == null)
         {
@@ -106,24 +99,22 @@ public class TimeEntryService
         }
 
         timeEntry.ProjectId = projectId;
-        db.SaveChanges();
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }
 
     public OperationResult DeleteTimeEntry(int id)
     {
-        using var db = new TimeFlowDbContext();
-
-        TimeEntry? timeEntry = db.TimeEntries.Find(id);
+        TimeEntry? timeEntry = _db.TimeEntries.Find(id);
 
         if (timeEntry == null)
         {
             return OperationResult.Failure($"Time entry with id {id} not found.");
         }
 
-        db.TimeEntries.Remove(timeEntry);
-        db.SaveChanges();
+        _db.TimeEntries.Remove(timeEntry);
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }

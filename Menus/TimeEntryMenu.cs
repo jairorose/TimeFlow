@@ -27,11 +27,12 @@ public class TimeEntryMenu
 {
     private readonly ProjectService _projectService;
 
-    private readonly TimeEntryService timeEntryService = new TimeEntryService();
+    private readonly TimeEntryService _timeEntryService;
 
-    public TimeEntryMenu(ProjectService projectService)
+    public TimeEntryMenu(ProjectService projectService, TimeEntryService timeEntryService)
     {
         _projectService = projectService;
+        _timeEntryService = timeEntryService;
     }
     
     public void Show()
@@ -129,7 +130,7 @@ public class TimeEntryMenu
         
         DateTime endTime = ConsoleInputService.PromptValidEndTime(startTime);
 
-        timeEntryService.Create(description, startTime, endTime, projectId);
+        _timeEntryService.Create(description, startTime, endTime, projectId);
 
         Console.WriteLine();
         Console.WriteLine("Time entry added successfully!");
@@ -139,7 +140,7 @@ public class TimeEntryMenu
     {
         Console.WriteLine("========== Create Time Entry ==========");
 
-        List<TimeEntry> timeEntries = timeEntryService.GetAll();
+        List<TimeEntry> timeEntries = _timeEntryService.GetAll();
 
         int timeEntryCounter = 0;
 
@@ -165,7 +166,7 @@ public class TimeEntryMenu
         Console.WriteLine("Available Time Entries: ");
         Console.WriteLine();
 
-        List<TimeEntry> timeEntries = timeEntryService.GetAll();
+        List<TimeEntry> timeEntries = _timeEntryService.GetAll();
 
         // First check if there are time entries available to edit otherwise return to menu
         if (timeEntries.Count == 0)
@@ -238,7 +239,7 @@ public class TimeEntryMenu
                 string newDescription = ConsoleInputService.PromptUntilValid<string>
                     (StringValidator.GetValidString, "Invalid input. Value cannot be empty and must be 45 characters or less.");
 
-                result = timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
+                result = _timeEntryService.UpdateDescription(timeEntries[timeEntryIndex].Id, newDescription);
                 break;
             case TimeEntryEditOption.StartTime:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
@@ -249,7 +250,7 @@ public class TimeEntryMenu
                 DateTime endTime = timeEntries[timeEntryIndex].EndTime;
                 DateTime newStartTime = ConsoleInputService.PromptValidStartTimeChange(endTime);
 
-                result = timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
+                result = _timeEntryService.UpdateStartTime(timeEntries[timeEntryIndex].Id, newStartTime);
                 break;
             case TimeEntryEditOption.EndTime:
                 Console.WriteLine($"Current start date & time (dd-MM-yyyy HH:mm): {timeEntries[timeEntryIndex].StartTime}");
@@ -260,7 +261,7 @@ public class TimeEntryMenu
                 DateTime startTime = timeEntries[timeEntryIndex].StartTime;
                 DateTime newEndTime = ConsoleInputService.PromptValidEndTime(startTime);
 
-                result = timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
+                result = _timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
                 break;
             case TimeEntryEditOption.Project:
                 Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");
@@ -287,7 +288,7 @@ public class TimeEntryMenu
 
                 int projectId = projectNumber - 1; // -1 because zero based index
 
-                result = timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
+                result = _timeEntryService.UpdateProject(timeEntries[timeEntryIndex].Id, projects[projectId].Id);
                 break;
             case TimeEntryEditOption.Back:
                 break;
@@ -323,7 +324,7 @@ public class TimeEntryMenu
 
         int timeEntryCounter = 1;
 
-        List<TimeEntry> timeEntries = timeEntryService.GetAll();
+        List<TimeEntry> timeEntries = _timeEntryService.GetAll();
 
         // First check if there are projects available to delete otherwise return to menu
         if (timeEntries.Count == 0)
@@ -372,7 +373,7 @@ public class TimeEntryMenu
 
                 if (choice.ToLower() == "y")
                 {
-                    var result = timeEntryService.DeleteTimeEntry(timeEntries[i].Id);
+                    var result = _timeEntryService.DeleteTimeEntry(timeEntries[i].Id);
 
                     if (result.Succeeded)
                     {
