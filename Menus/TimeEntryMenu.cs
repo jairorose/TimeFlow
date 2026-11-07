@@ -23,12 +23,18 @@ public enum TimeEntryEditOption
     Project
 }
 
-public static class TimeEntryMenu
+public class TimeEntryMenu
 {
-    private static readonly ProjectService projectService = new ProjectService();
+    private readonly ProjectService _projectService;
 
-    private static readonly TimeEntryService timeEntryService = new TimeEntryService();
-    public static void Show()
+    private readonly TimeEntryService timeEntryService = new TimeEntryService();
+
+    public TimeEntryMenu(ProjectService projectService)
+    {
+        _projectService = projectService;
+    }
+    
+    public void Show()
     {
         Console.WriteLine("========== Time Entries ==========");
         Console.WriteLine();
@@ -67,7 +73,7 @@ public static class TimeEntryMenu
         }
     }
 
-    private static void CreateTimeEntry()
+    private void CreateTimeEntry()
     {   
         Console.WriteLine("========== Create Time Entry ==========");
         Console.WriteLine();
@@ -75,7 +81,7 @@ public static class TimeEntryMenu
         Console.WriteLine();
 
         // First show projects to link to the time entry
-        List<Project> projects = projectService.GetAll();
+        List<Project> projects = _projectService.GetAll();
 
         // If there are no projects show a helpfull message to the user
         if (projects.Count == 0)
@@ -129,7 +135,7 @@ public static class TimeEntryMenu
         Console.WriteLine("Time entry added successfully!");
     }
 
-    private static void ShowTimeEntries()
+    private void ShowTimeEntries()
     {
         Console.WriteLine("========== Create Time Entry ==========");
 
@@ -152,7 +158,7 @@ public static class TimeEntryMenu
         }
     }
 
-    private static void EditTimeEntry()
+    private void EditTimeEntry()
     {
         Console.WriteLine("========== Edit Time Entry ==========");
         Console.WriteLine();
@@ -264,7 +270,7 @@ public static class TimeEntryMenu
 
                 int projectCounter = 1;
 
-                List<Project> projects = projectService.GetAll();
+                List<Project> projects = _projectService.GetAll();
 
                 foreach (Project project in projects)
                 {
@@ -308,7 +314,7 @@ public static class TimeEntryMenu
         }
     }
 
-    private static void DeleteTimeEntry()
+    private void DeleteTimeEntry()
     {
         Console.WriteLine("========== Delete Time Entry ==========");
         Console.WriteLine();

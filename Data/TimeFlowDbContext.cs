@@ -12,13 +12,11 @@ public class TimeFlowDbContext : DbContext
     {
         if (optionsBuilder.IsConfigured) return;
         
-        //var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        //var dbFolder = Path.Combine(folder, "TimeFlow");
+        string fileName = "TimeFlowDev.db";
+        string folder = Directory.GetCurrentDirectory();
+        Directory.CreateDirectory(folder + "/DB/");
 
-        //Directory.CreateDirectory(dbFolder);
-
-        //var path = Path.Combine(dbFolder, "TimeFlowDev.db");
-        var path = "/Users/jairo419/Documents/Software ontwikkeling/Coderen/TimeFlow development/TimeFlow/DB/TimeFlowDev.db";
+        string path = Path.Combine(folder, "DB", fileName);
 
         optionsBuilder.UseSqlite($"Data Source={path}");
     }

@@ -12,9 +12,18 @@ public enum MainMenuOption
     Reports
 }
 
-public static class MainMenu
+public class MainMenu
 {
-    public static void Show()
+    private readonly ProjectMenu _projectMenu;
+    private readonly TimeEntryMenu _timeEntryMenu;
+
+    public MainMenu(ProjectMenu projectMenu, TimeEntryMenu timeEntryMenu)
+    {
+        _projectMenu = projectMenu;
+        _timeEntryMenu = timeEntryMenu;
+    }
+    
+    public void Show()
     {
         using var db = new TimeFlowDbContext();
         db.Database.Migrate();
@@ -45,10 +54,10 @@ public static class MainMenu
             switch ((MainMenuOption)choice)
             {
                 case MainMenuOption.Projects:
-                    ProjectMenu.Show();
+                    _projectMenu.Show();
                     break;
                 case MainMenuOption.TimeEntries:
-                    TimeEntryMenu.Show();
+                    _timeEntryMenu.Show();
                     break;
                 case MainMenuOption.Reports:
                     ReportMenu.Show();

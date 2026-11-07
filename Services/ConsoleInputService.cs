@@ -33,12 +33,10 @@ public static class ConsoleInputService
         return choice;
     }
 
-    public static string PromptValidProjectName(int? projectId = null)
+    public static string PromptValidProjectName(ProjectService projectService, int? projectId = null)
     {
         string projectName;
         bool validInput = false;
-
-        ProjectService projectService = new ProjectService();
 
         do
         {
