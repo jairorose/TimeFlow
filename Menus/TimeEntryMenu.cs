@@ -260,7 +260,7 @@ public class TimeEntryMenu
                 DateTime startTime = timeEntries[timeEntryIndex].StartTime;
                 DateTime newEndTime = ConsoleInputService.PromptValidEndTime(startTime);
 
-                timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
+                result = timeEntryService.UpdateEndTime(timeEntries[timeEntryIndex].Id, newEndTime);
                 break;
             case TimeEntryEditOption.Project:
                 Console.WriteLine($"Current project: {timeEntries[timeEntryIndex].Project.Name}");
