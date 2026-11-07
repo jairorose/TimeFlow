@@ -12,7 +12,20 @@ public class TimeEntryServiceTests
 
     public TimeEntryServiceTests()
     {
-        db = new TimeFlowDbContext();
+        // Set database file path
+        string fileName = "TimeFlowDev.db";
+        string folder = Directory.GetCurrentDirectory();
+        Directory.CreateDirectory(Path.Combine(folder, "DB")); 
+
+        string path = Path.Combine(folder, "DB", fileName);
+
+        // Setup database options
+        var options = new DbContextOptionsBuilder<TimeFlowDbContext>()
+            .UseSqlite($"Data Source={path}")
+            .Options;
+
+        db = new TimeFlowDbContext(options);
+        
         db.Database.Migrate();
 
         timeEntryService = new TimeEntryService(db);

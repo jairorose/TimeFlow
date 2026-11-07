@@ -24,6 +24,8 @@ class Program
         builder.Services.AddScoped<ProjectMenu>();
         builder.Services.AddScoped<TimeEntryService>();
         builder.Services.AddScoped<TimeEntryMenu>();
+        builder.Services.AddScoped<ReportService>();
+        builder.Services.AddScoped<ReportMenu>();
         builder.Services.AddScoped<MainMenu>();
         
         IHost host = builder.Build();
@@ -31,6 +33,10 @@ class Program
         
         // Adds menus to scope
         var mainMenu = scope.ServiceProvider.GetRequiredService<MainMenu>();
+        
+        // Migrate database if it doesn't exist
+        var db = scope.ServiceProvider.GetRequiredService<TimeFlowDbContext>();
+        db.Database.Migrate();
 
         mainMenu.Show();
     }

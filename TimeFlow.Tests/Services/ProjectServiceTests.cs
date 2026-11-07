@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 namespace TimeFlow.Tests.Services;
 
 using TimeFlow.Services;
@@ -13,7 +16,20 @@ public class ProjectServiceTests
     
     public ProjectServiceTests()
     {
-        db = new TimeFlowDbContext(); // Making sure the database exists
+        // Set database file path
+        string fileName = "TimeFlowDev.db";
+        string folder = Directory.GetCurrentDirectory();
+        Directory.CreateDirectory(Path.Combine(folder, "DB")); 
+
+        string path = Path.Combine(folder, "DB", fileName);
+
+        // Setup database options
+        var options = new DbContextOptionsBuilder<TimeFlowDbContext>()
+            .UseSqlite($"Data Source={path}")
+            .Options;
+
+        db = new TimeFlowDbContext(options);
+        
         db.Database.Migrate();
 
         projectService = new ProjectService(db);

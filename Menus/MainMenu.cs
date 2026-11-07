@@ -16,18 +16,19 @@ public class MainMenu
 {
     private readonly ProjectMenu _projectMenu;
     private readonly TimeEntryMenu _timeEntryMenu;
+    private readonly ReportMenu _reportMenu;
 
-    public MainMenu(ProjectMenu projectMenu, TimeEntryMenu timeEntryMenu)
+    public MainMenu(ProjectMenu projectMenu, 
+        TimeEntryMenu timeEntryMenu,
+        ReportMenu reportMenu)
     {
         _projectMenu = projectMenu;
         _timeEntryMenu = timeEntryMenu;
+        _reportMenu = reportMenu;
     }
     
     public void Show()
     {
-        using var db = new TimeFlowDbContext();
-        db.Database.Migrate();
-
         do
         {
             Console.WriteLine("");
@@ -60,7 +61,7 @@ public class MainMenu
                     _timeEntryMenu.Show();
                     break;
                 case MainMenuOption.Reports:
-                    ReportMenu.Show();
+                    _reportMenu.Show();
                     break;
                 case MainMenuOption.Exit:
                     return;
