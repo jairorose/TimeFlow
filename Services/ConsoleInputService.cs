@@ -104,9 +104,7 @@ public static class ConsoleInputService
         {
             DateTime startTime = PromptValidStartTime();
 
-            TimeEntryService timeEntryService = new TimeEntryService();
-
-            bool validDateTime = timeEntryService.ValidateStartTime(startTime, currentEndTime);
+            bool validDateTime = DateTimeValidator.ValidateStartTime(startTime, currentEndTime);
 
             if (!validDateTime)
             {
@@ -125,15 +123,13 @@ public static class ConsoleInputService
         
         while (true)
         {
-            TimeEntryService timeEntryService = new TimeEntryService();
-
             string? readInput = Console.ReadLine();
 
             bool validDateTime = DateTimeValidator.GetValidDateTime(readInput, out newEndTime);
 
             if (validDateTime)
             {
-                validDateTime = timeEntryService.ValidateStartTime(currentStartTime, newEndTime);
+                validDateTime = DateTimeValidator.ValidateStartTime(currentStartTime, newEndTime);
 
                 if (!validDateTime)
                 {

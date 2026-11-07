@@ -1,4 +1,5 @@
 using TimeFlow.Services;
+using TimeFlow.Services.Validators;
 
 namespace TimeFlow.Tests;
 
@@ -15,9 +16,7 @@ public class TimeEntryServiceTests
         DateTime endTime = new DateTime(eYear, eMonth, eDay, eHour, eMinute, 0);
 
         // Act
-        TimeEntryService timeEntryService = new TimeEntryService();
-
-        bool result = timeEntryService.ValidateStartTime(startTime, endTime);
+        bool result = DateTimeValidator.ValidateStartTime(startTime, endTime);
 
         // Assert
         Assert.True(result);
@@ -38,7 +37,7 @@ public class TimeEntryServiceTests
         // Act
         TimeEntryService timeEntryService = new TimeEntryService();
 
-        bool result = timeEntryService.ValidateStartTime(startTime, endTime);
+        bool result = DateTimeValidator.ValidateStartTime(startTime, endTime);
 
         // Assert
         Assert.False(result);
@@ -56,7 +55,7 @@ public class TimeEntryServiceTests
         // Act
         TimeEntryService timeEntryService = new TimeEntryService();
 
-        bool result = timeEntryService.ValidateStartTime(startTime, endTime);
+        bool result = DateTimeValidator.ValidateStartTime(startTime, endTime);
 
         // Assert
         Assert.False(result);
