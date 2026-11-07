@@ -14,11 +14,16 @@ public enum ProjectMenuOption
     DeleteProject
 }
 
-public static class ProjectMenu
+public class ProjectMenu
 {
+    private readonly ProjectService _projectService;
 
-    private static readonly ProjectService projectService = new ProjectService();
-    public static void Show()
+    public ProjectMenu(ProjectService projectService)
+    {
+        _projectService = projectService;
+    }
+    
+    public void Show()
     {
         Console.WriteLine("========== Projects ==========");
         Console.WriteLine();
@@ -56,15 +61,15 @@ public static class ProjectMenu
         }
     }
 
-    private static void CreateProject()
+    private void CreateProject()
     {
         Console.WriteLine("========== Create Project ==========");
         Console.WriteLine();
         Console.WriteLine("Enter project name:");
 
-        string projectName = ConsoleInputService.PromptValidProjectName();
+        string projectName = ConsoleInputService.PromptValidProjectName(_projectService);
 
-        OperationResult result = projectService.Create(projectName);
+        OperationResult result = _projectService.Create(projectName);
 
         if (result.Succeeded)
         {
@@ -78,14 +83,14 @@ public static class ProjectMenu
         Console.WriteLine();
     }
 
-    private static void ShowProjects()
+    private void ShowProjects()
     {
         Console.WriteLine("========== Projects ==========");
         Console.WriteLine();
 
         int projectCounter = 0;
 
-        List<Project> projects = projectService.GetAll();
+        List<Project> projects = _projectService.GetAll();
 
         foreach (Project project in projects)
         {
@@ -97,7 +102,7 @@ public static class ProjectMenu
         Console.WriteLine($"Total Projects: {projectCounter}");
     }
 
-    private static void EditProject()
+    private void EditProject()
     {
         Console.WriteLine("========== Edit Project ==========");
         Console.WriteLine();
@@ -106,7 +111,7 @@ public static class ProjectMenu
 
         int projectCounter = 1;
 
-        List<Project> projects = projectService.GetAll();
+        List<Project> projects = _projectService.GetAll();
 
         // First check if there are projects available to edit otherwise return to menu
         if (projects.Count == 0)
@@ -139,11 +144,11 @@ public static class ProjectMenu
                 Console.WriteLine();
                 Console.WriteLine("Enter new project name:");
 
-                string projectName = ConsoleInputService.PromptValidProjectName(projects[i].Id);
+                string projectName = ConsoleInputService.PromptValidProjectName(_projectService, projects[i].Id);
                 
                 Console.WriteLine();
 
-                var result = projectService.Update(projects[i].Id, projectName);
+                var result = _projectService.Update(projects[i].Id, projectName);
 
                 if (result.Succeeded)
                 {
@@ -159,7 +164,7 @@ public static class ProjectMenu
         }
     }
 
-    private static void DeleteProject()
+    private void DeleteProject()
     {
         Console.WriteLine("========== Delete Project ==========");
         Console.WriteLine();
@@ -168,7 +173,7 @@ public static class ProjectMenu
 
         int projectCounter = 1;
 
-        List<Project> projects = projectService.GetAll();
+        List<Project> projects = _projectService.GetAll();
 
         // First check if there are projects available to delete otherwise return to menu
         if (projects.Count == 0)
@@ -207,7 +212,7 @@ public static class ProjectMenu
 
                 if (choice.ToLower() == "y")
                 {
-                    var result = projectService.Delete(projects[i].Id);
+                    var result = _projectService.Delete(projects[i].Id);
 
                     switch (result)
                     {

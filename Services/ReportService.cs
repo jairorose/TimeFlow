@@ -6,11 +6,16 @@ namespace TimeFlow.Services;
 
 public class ReportService
 {
+    private readonly TimeFlowDbContext _db;
+
+    public ReportService(TimeFlowDbContext db)
+    {
+        _db = db;
+    }
+    
     public List<TimeEntry> GetEntriesByDay(DateTime day)
     {
-        using var db = new TimeFlowDbContext();
-
-        List<TimeEntry> timeEntries = db.TimeEntries
+        List<TimeEntry> timeEntries = _db.TimeEntries
             .Include(t => t.Project)
             .ToList();
 
@@ -34,9 +39,7 @@ public class ReportService
         DateTime start = date.Date.AddDays(-difference);
         DateTime endExclusive = start.AddDays(7);
 
-        using var db = new TimeFlowDbContext();
-
-        var timeEntries = db.TimeEntries
+        var timeEntries = _db.TimeEntries
             .Include(t => t.Project)
             .Where(t => t.StartTime >= start && t.StartTime < endExclusive)
             .GroupBy(t => t.Project)
@@ -47,11 +50,9 @@ public class ReportService
 
     public List<IGrouping<Project, TimeEntry>> GetEntriesByMonth(DateTime month)
     {
-        using var db = new TimeFlowDbContext();
-
         DateTime end = month.AddMonths(1);
 
-        var timeEntries = db.TimeEntries
+        var timeEntries = _db.TimeEntries
             .Include(t => t.Project)
             .Where(t => t.StartTime >= month && t.StartTime < end)
             .GroupBy(t => t.Project)
@@ -62,11 +63,9 @@ public class ReportService
 
     public List<IGrouping<Project, TimeEntry>> GetEntriesByYear(DateTime year)
     {
-        using var db = new TimeFlowDbContext();
-
         DateTime end = year.AddYears(1);
 
-        var timeEntries = db.TimeEntries
+        var timeEntries = _db.TimeEntries
             .Include(t => t.Project)
             .Where(t => t.StartTime >= year && t.StartTime < end)
             .GroupBy(t => t.Project)

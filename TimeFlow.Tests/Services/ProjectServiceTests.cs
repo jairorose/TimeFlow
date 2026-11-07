@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 namespace TimeFlow.Tests.Services;
 
 using TimeFlow.Services;
@@ -9,18 +12,33 @@ using Microsoft.EntityFrameworkCore;
 public class ProjectServiceTests
 {
     private TimeFlowDbContext db { get; }
+    private ProjectService projectService { get;  }
     
     public ProjectServiceTests()
     {
-        db = new TimeFlowDbContext(); // Making sure the database exists
+        // Set database file path
+        string fileName = "TimeFlowDev.db";
+        string folder = Directory.GetCurrentDirectory();
+        Directory.CreateDirectory(Path.Combine(folder, "DB")); 
+
+        string path = Path.Combine(folder, "DB", fileName);
+
+        // Setup database options
+        var options = new DbContextOptionsBuilder<TimeFlowDbContext>()
+            .UseSqlite($"Data Source={path}")
+            .Options;
+
+        db = new TimeFlowDbContext(options);
+        
         db.Database.Migrate();
+
+        projectService = new ProjectService(db);
     }
     
     [Fact]
     public void Create_ValidName_AddsToDatabase()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         
         // Act
@@ -40,7 +58,6 @@ public class ProjectServiceTests
     public void Create_EmptyOrWhitespaceName_ReturnsFailure(string name)
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         
         // Act
         OperationResult result = projectService.Create(name);
@@ -53,7 +70,6 @@ public class ProjectServiceTests
     public void Create_NameExactlyMaxLength_AddsToDatabase() // Only possible for one time
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = new string('a', Project.NameMaxLength - 32);
         name += Guid.NewGuid().ToString("N");
         
@@ -71,7 +87,6 @@ public class ProjectServiceTests
     public void Create_NameOverMaxLength_ReturnsFailure() // Only possible for one time
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = new string('a', Project.NameMaxLength + 1);
         
         // Act
@@ -86,7 +101,6 @@ public class ProjectServiceTests
     public void Create_DuplicateName_ReturnsFailure()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         
         // Act
@@ -103,7 +117,6 @@ public class ProjectServiceTests
     public void IsNameAvailable_DuplicateName_ReturnsFalse()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         
         // Act
@@ -118,7 +131,6 @@ public class ProjectServiceTests
     public void Update_RenameToSameName_Succeeds()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
 
         OperationResult createResult = projectService.Create(name);
@@ -154,7 +166,6 @@ public class ProjectServiceTests
     public void Update_InvalidName_ReturnsFailureAndKeepsOldName(string newName)
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         int id = CreateProjectAndGetId(projectService, name);
 
@@ -170,7 +181,6 @@ public class ProjectServiceTests
     public void Update_NameBelongsToOtherProjectWithDifferentCasing_ReturnsFailure()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string nameA = $"test-{Guid.NewGuid():N}";
         string nameB = $"test-{Guid.NewGuid():N}";
         CreateProjectAndGetId(projectService, nameA);
@@ -189,7 +199,6 @@ public class ProjectServiceTests
     public void Update_OnlyCasingChanges_Succeeds()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         int id = CreateProjectAndGetId(projectService, name);
 
@@ -205,7 +214,6 @@ public class ProjectServiceTests
     public void Update_UnknownIdWithExistingName_ReturnsNotFound()
     {
         // Arrange: Order (name valid -> project exists -> name is taken)
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         CreateProjectAndGetId(projectService, name);
 
@@ -221,7 +229,6 @@ public class ProjectServiceTests
     public void Create_NameDiffersOnlyInCasing_ReturnsFailure()
     {
         // Arrange
-        ProjectService projectService = new ProjectService();
         string name = $"test-{Guid.NewGuid():N}";
         projectService.Create(name);
 

@@ -13,11 +13,16 @@ public enum ProjectDeletionResult
 
 public class ProjectService
 {
+    private readonly TimeFlowDbContext _db;
+
+    public ProjectService(TimeFlowDbContext db)
+    {
+        _db = db;
+    }
+    
     public List<Project> GetAll()
     {
-        using var db = new TimeFlowDbContext();
-
-        List<Project> projects = db.Projects.ToList();
+        List<Project> projects = _db.Projects.ToList();
 
         return projects;
     }
@@ -33,9 +38,8 @@ public class ProjectService
         
         Project project = new Project(normalizedName);
 
-        using var db = new TimeFlowDbContext(); // Make connection to the database
-        db.Projects.Add(project);
-        db.SaveChanges();
+        _db.Projects.Add(project);
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }
@@ -49,45 +53,40 @@ public class ProjectService
         if (error != null)
             return OperationResult.Failure(error);
 
-        using var db = new TimeFlowDbContext();
-        Project? project = db.Projects.Find(id);
+        Project? project = _db.Projects.Find(id);
 
         if (project == null)
             return OperationResult.Failure($"Project with id {id} not found.");
 
         project.Rename(normalizedName);
-        db.SaveChanges();
+        _db.SaveChanges();
 
         return OperationResult.Success();
     }
 
     public ProjectDeletionResult Delete(int id)
     {
-        using var db = new TimeFlowDbContext();
-
-        Project? project = db.Projects.Find(id);
+        Project? project = _db.Projects.Find(id);
 
         if (project is null)
         {
             return ProjectDeletionResult.NotFound;
         }
 
-        if (db.TimeEntries.Any(entry => entry.ProjectId == id))
+        if (_db.TimeEntries.Any(entry => entry.ProjectId == id))
         {
             return ProjectDeletionResult.HasTimeEntries;
         }
 
-        db.Projects.Remove(project);
-        db.SaveChanges();
+        _db.Projects.Remove(project);
+        _db.SaveChanges();
 
         return ProjectDeletionResult.Deleted;
     }
 
     public bool IsNameAvailable(string name, int? excludeId = null)
     {
-        using var db = new TimeFlowDbContext();
-        
-        IQueryable<Project> query = db.Projects;
+        IQueryable<Project> query = _db.Projects;
 
         if (excludeId != null)
             query = query.Where(p => p.Id != excludeId);
@@ -119,7 +118,6 @@ public class ProjectService
 
     private bool ProjectExists(int id)
     {
-        using var db = new TimeFlowDbContext();
-        return db.Projects.Any(p => p.Id == id);
+        return _db.Projects.Any(p => p.Id == id);
     }
 }

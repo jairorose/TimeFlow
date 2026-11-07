@@ -13,11 +13,16 @@ public enum ReportMenuOption
     YearlyReport
 }
 
-public static class ReportMenu
+public class ReportMenu
 {
-    private static readonly ReportService reportService = new ReportService();
+    private readonly ReportService _reportService;
 
-    public static void Show()
+    public ReportMenu(ReportService reportService)
+    {
+        _reportService = reportService;
+    }
+
+    public void Show()
     {
         Console.WriteLine("========== Reports ==========");
         Console.WriteLine();
@@ -55,7 +60,7 @@ public static class ReportMenu
         }
     }
 
-    private static void ShowDailyReport()
+    private void ShowDailyReport()
     {
         Console.WriteLine();
         Console.WriteLine("========== Daily Report ==========");
@@ -67,7 +72,7 @@ public static class ReportMenu
 
         Console.WriteLine();
 
-        List<TimeEntry> timeEntries = reportService.GetEntriesByDay(day);
+        List<TimeEntry> timeEntries = _reportService.GetEntriesByDay(day);
 
         int timeEntryCounter = 0;
 
@@ -86,7 +91,7 @@ public static class ReportMenu
         }
     }
 
-    private static void ShowWeeklyReport()
+    private void ShowWeeklyReport()
     {
         Console.WriteLine();
         Console.WriteLine("========== Weekly Report ==========");
@@ -105,12 +110,12 @@ public static class ReportMenu
         DateTime end = start.AddDays(6);
         Console.WriteLine($"Time entries monday {start:dd-MM-yyyy} to sunday {end:dd-MM-yyyy}:");
 
-        var timeEntries = reportService.GetEntriesByWeek(date);
+        var timeEntries = _reportService.GetEntriesByWeek(date);
 
         PrintDurationPerProject(timeEntries);
     }
 
-    private static void ShowMonthlyReport()
+    private void ShowMonthlyReport()
     {
         Console.WriteLine();
         Console.WriteLine("========== Monthly Report ==========");
@@ -122,12 +127,12 @@ public static class ReportMenu
 
         Console.WriteLine();
 
-        var timeEntries = reportService.GetEntriesByMonth(month);
+        var timeEntries = _reportService.GetEntriesByMonth(month);
 
         PrintDurationPerProject(timeEntries);
     }
 
-    private static void ShowYearlyReport()
+    private void ShowYearlyReport()
     {
         Console.WriteLine();
         Console.WriteLine("========== Yearly Report ==========");
@@ -139,12 +144,12 @@ public static class ReportMenu
 
         Console.WriteLine();
 
-        var timeEntries = reportService.GetEntriesByYear(year);
+        var timeEntries = _reportService.GetEntriesByYear(year);
 
         PrintDurationPerProject(timeEntries);
     }
 
-    private static void PrintDurationPerProject(List<IGrouping<Project, TimeEntry>> timeEntries)
+    private void PrintDurationPerProject(List<IGrouping<Project, TimeEntry>> timeEntries)
     {
         foreach (var project in timeEntries)
         {

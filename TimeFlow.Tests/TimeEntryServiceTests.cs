@@ -1,9 +1,36 @@
+using Microsoft.EntityFrameworkCore;
 using TimeFlow.Services;
+using TimeFlow.Services.Validators;
+using TimeFlow.Data;
 
 namespace TimeFlow.Tests;
 
 public class TimeEntryServiceTests
 {
+    private TimeFlowDbContext db { get; }
+    private TimeEntryService timeEntryService { get; }
+
+    public TimeEntryServiceTests()
+    {
+        // Set database file path
+        string fileName = "TimeFlowDev.db";
+        string folder = Directory.GetCurrentDirectory();
+        Directory.CreateDirectory(Path.Combine(folder, "DB")); 
+
+        string path = Path.Combine(folder, "DB", fileName);
+
+        // Setup database options
+        var options = new DbContextOptionsBuilder<TimeFlowDbContext>()
+            .UseSqlite($"Data Source={path}")
+            .Options;
+
+        db = new TimeFlowDbContext(options);
+        
+        db.Database.Migrate();
+
+        timeEntryService = new TimeEntryService(db);
+    }
+    
     [Theory]
     [InlineData(2026, 01, 01, 10, 00, 2026, 01, 01, 12, 00)]
     [InlineData(2026, 01, 01, 10, 00, 2026, 01, 02, 09, 59)]
@@ -15,9 +42,7 @@ public class TimeEntryServiceTests
         DateTime endTime = new DateTime(eYear, eMonth, eDay, eHour, eMinute, 0);
 
         // Act
-        TimeEntryService timeEntryService = new TimeEntryService();
-
-        bool result = timeEntryService.ValidateStartTime(startTime, endTime);
+        bool result = DateTimeValidator.ValidateStartTime(startTime, endTime);
 
         // Assert
         Assert.True(result);
@@ -36,9 +61,7 @@ public class TimeEntryServiceTests
         DateTime endTime = new DateTime(eYear, eMonth, eDay, eHour, eMinute, 0);
 
         // Act
-        TimeEntryService timeEntryService = new TimeEntryService();
-
-        bool result = timeEntryService.ValidateStartTime(startTime, endTime);
+        bool result = DateTimeValidator.ValidateStartTime(startTime, endTime);
 
         // Assert
         Assert.False(result);
@@ -54,9 +77,7 @@ public class TimeEntryServiceTests
         DateTime endTime = new DateTime(eYear, eMonth, eDay, eHour, eMinute, 0);
 
         // Act
-        TimeEntryService timeEntryService = new TimeEntryService();
-
-        bool result = timeEntryService.ValidateStartTime(startTime, endTime);
+        bool result = DateTimeValidator.ValidateStartTime(startTime, endTime);
 
         // Assert
         Assert.False(result);
